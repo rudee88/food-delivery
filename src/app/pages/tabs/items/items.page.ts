@@ -13,8 +13,13 @@ export class ItemsPage implements OnInit {
   data: any = {};
   items: any[] = [];
   veg: boolean = false;
+  isLoading: boolean;
   cartData: any = {};
   storeData: any = {};
+  model = {
+    icon: 'fast-food-outline',
+    title: 'No Menu Available'
+  };
   restaurants = [
     {
       uid: '1a',
@@ -137,40 +142,40 @@ export class ItemsPage implements OnInit {
   }
 
   async getItems() {
+    this.isLoading = true;
     this.data = {};
     this.cartData = {};
     this.storeData = {};
-    let data = this.restaurants.filter((x) => x.uid === this.id);
-    this.data = data[0];
-    this.categories = this.categories.filter((x) => x.uid === this.id);
-    this.items = this.allItems.filter((x) => x.uid === this.id);
-
-    this.items.forEach((item) => {
-      item.quantity = 0;
-    });
-
-    console.log('restaurant: ', this.data);
-
-    let cart: any = await this.getCart();
-    console.log('cart: ', cart);
-    if (cart?.value) {
-      this.storeData = JSON.parse(cart.value);
-      console.log('storeData: ', this.storeData);
-      if (this.id == this.storeData.restaurant.uid && this.allItems.length > 0) {
-        this.allItems.forEach((element: any) => {
-          this.storeData.items.forEach(ele => {
-            if (element.id != ele.id) return;
-            element.quantity = ele.quantity;
-          })
-        });
+    setTimeout(async() => {
+      let data = this.restaurants.filter((x) => x.uid === this.id);
+      this.data = data[0];
+      this.categories = this.categories.filter((x) => x.uid === this.id);
+      this.items = this.allItems.filter((x) => x.uid === this.id);
+  
+      this.items.forEach((item) => {
+        item.quantity = 0;
+      });
+  
+      console.log('restaurant: ', this.data);
+  
+      let cart: any = await this.getCart();
+      console.log('cart: ', cart);
+      if (cart?.value) {
+        this.storeData = JSON.parse(cart.value);
+        console.log('storeData: ', this.storeData);
+        if (this.id == this.storeData.restaurant.uid && this.allItems.length > 0) {
+          this.allItems.forEach((element: any) => {
+            this.storeData.items.forEach(ele => {
+              if (element.id != ele.id) return;
+              element.quantity = ele.quantity;
+            })
+          });
+        }
+        this.cartData.totalItem = this.storeData.totalItem;
+        this.cartData.totalPrice = this.storeData.totalPrice;
       }
-      this.cartData.totalItem = this.storeData.totalItem;
-      this.cartData.totalPrice = this.storeData.totalPrice;
-    }
-  }
-
-  getCuisine(cuisines) {
-    return cuisines.join(', ');
+      this.isLoading = false;
+    },2000);
   }
 
   vegOnly(event) {
@@ -184,7 +189,7 @@ export class ItemsPage implements OnInit {
     console.log('items: ', this.items);
   }
 
-  onQuantityPlus(item, index) {
+  onQuantityPlus(index) {
     try {
       console.log(this.items[index]);
       if (!this.items[index] || this.items[index].quantity == 0) {
@@ -197,7 +202,7 @@ export class ItemsPage implements OnInit {
     } catch (e) {}
   }
 
-  onQuantityMinus(item, index) {
+  onQuantityMinus(index) {
     if (this.items[index].quantity !== 0) {
       this.items[index].quantity -= 1; // this.items[index].quantity = this.items[index].quantity - 1
     } else {

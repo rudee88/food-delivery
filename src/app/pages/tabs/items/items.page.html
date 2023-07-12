@@ -8,48 +8,9 @@
 </ion-header>
 
 <ion-content>
-  
-  <ion-grid *ngIf="data?.name" class="borderBottom">
-    <ion-row class="ion-padding-horizontal dashedBorderBottom">
-     <ion-label>
-      <h1>{{ data?.name }}</h1>
-      <ion-text *ngIf="data?.cuisines"><p>{{ getCuisine(data.cuisines) }}</p></ion-text>
-        <p>{{ data?.address }}</p>
-     </ion-label>
-    </ion-row>
-    <ion-row>
-      <ion-col size="4">
-        <ion-label class="ion-text-center">
-          <ion-text>
-            <p>
-              <ion-icon name="star"></ion-icon>{{ data?.rating }}
-            </p>
-          </ion-text>
-          <p>Ratings</p>
-        </ion-label>
-      </ion-col>
-      <ion-col size="4">
-        <ion-label class="ion-text-center">
-          <ion-text>
-            <p>
-              {{ data?.delivery_time }} MINS
-            </p>
-          </ion-text>
-          <p>Delivery Time</p>
-        </ion-label>
-      </ion-col>
-      <ion-col size="4">
-        <ion-label class="ion-text-center">
-          <ion-text>
-            <p>
-              RM{{ data?.price }}
-            </p>
-          </ion-text>
-          <p>For Two</p>
-        </ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+
+  <app-restaurant-detail [data]="data" [isLoading]="isLoading"></app-restaurant-detail>
+
 
   <ion-row class="ion-padding veg borderBottomSmall">
     <ion-label>
@@ -58,29 +19,22 @@
     <ion-toggle mode="md" color="success" (ionChange)="vegOnly($event)" [(ngModel)]="veg"></ion-toggle>
   </ion-row>
 
+  <app-loading-restaurant *ngIf="isLoading"></app-loading-restaurant>
+
+  <app-empty-screen [model]="model" *ngIf="!isLoading && categories?.length === 0"></app-empty-screen>
+
   <ion-list lines="none" *ngFor="let category of categories">
     <ion-list-header>
       {{ category?.name }}
     </ion-list-header>
     <ng-container *ngFor="let item of items; let i = index">
-      <ion-item *ngIf="category.id === item.category_id">
-      <ion-thumbnail slot="start">
-        <ion-img [src]="item?.cover ? item.cover : 'assets/imgs/1.jpg'"></ion-img>
-      </ion-thumbnail>
-      <ion-label>
-         <h4>{{ item?.name }}</h4>
-      <p class="ion-text-wrap">{{ item?.desc }}</p>
-      <ion-text><p>RM{{ item?.price | number: '0.2-2' }}</p></ion-text>
-      </ion-label>
-      <ion-row *ngIf="!item?.quantity || item?.quantity <= 0" (click)="onQuantityPlus(item, i)">
-        <ion-text class="ion-padding-horizontal" color="success">Add</ion-text>
-      </ion-row>
-      <ion-row *ngIf="item?.quantity > 0">
-        <ion-icon name="remove-outline" color="success" (click)="onQuantityMinus(item, i)"></ion-icon>
-        <ion-text class="ion-text-center quantity" color="success">{{ item?.quantity }}</ion-text>
-        <ion-icon name="add-outline" color="success" (click)="onQuantityPlus(item, i)"></ion-icon>
-      </ion-row>
-    </ion-item>
+      <app-item 
+      *ngIf="category.id === item.category_id"
+      [item]="item"
+      [index]="i"
+      (add)="onQuantityPlus($event)"
+      (minus)="onQuantityMinus($event)"
+      ></app-item>
     </ng-container>
     
   </ion-list>
