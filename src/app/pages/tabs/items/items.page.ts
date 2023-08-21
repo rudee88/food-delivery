@@ -249,7 +249,8 @@ export class ItemsPage implements OnInit {
   async onViewCart() {
     if (this.cartData.items && this.cartData.items.length > 0) {
       await this.saveToCart();
-      // this.router.navigate([this.router.url + '/cart']);
+      console.log('router: ', this.router.url);
     }
+    this.router.navigate([this.router.url + '/cart']);
   }
 }
