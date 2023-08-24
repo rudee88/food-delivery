@@ -8,6 +8,9 @@
 </ion-header>
 
 <ion-content>
+
+  <app-empty-screen *ngIf="!model?.restaurant"></app-empty-screen>
+
   <ng-container *ngIf="model?.restaurant">
     <ion-list lines="none" class="borderBottomSmall">
       <ion-item>
@@ -23,32 +26,14 @@
           <ion-note>{{ model?.restaurant?.address }}</ion-note>
         </ion-label>
       </ion-item>
-      <ion-item *ngFor="let item of model?.items; let i = index">
-        <ion-text color="success">
-          <span class="dotStyle">&#9679;</span>
-        </ion-text>
-        <ion-label class="ion-text-wrap">
-          <h5>{{ item?.name }}</h5>
-        </ion-label>
-        <ion-row>
-          <ion-icon
-            color="success"
-            name="remove-outline"
-            (click)="onQuantityMinus(i)"
-          ></ion-icon>
-          <ion-text class="ion-text-center quantity" color="success"
-            >{{ item?.quantity }}</ion-text
-          >
-          <ion-icon
-            color="success"
-            name="add-outline"
-            (click)="onQuantityPlus(i)"
-          ></ion-icon>
-        </ion-row>
-        <ion-text slot="end" color="dark" class="price ion-text-right">
-          RM{{ (item?.price * item?.quantity).toFixed(2) }}
-        </ion-text>
-      </ion-item>
+      <app-cart-item
+        *ngFor="let item of model?.items; let i = index"
+        [item]="item"
+        [index]="i"
+        (minus)="onQuantityMinus($event)"
+        (add)="onQuantityPlus($event)"
+      >
+      </app-cart-item>
     </ion-list>
   </ng-container>
 
@@ -71,11 +56,15 @@
     </ion-item>
     <ion-item lines="none">
       <ion-label color="dark">Delivery Fee</ion-label>
-      <ion-text slot="end" color="dark">RM{{ model?.deliveryCharge | number: '0.2-2'}}</ion-text>
+      <ion-text slot="end" color="dark"
+        >RM{{ model?.deliveryCharge | number: '0.2-2'}}</ion-text
+      >
     </ion-item>
     <ion-item lines="none">
       <ion-label color="dark">To Pay</ion-label>
-      <ion-text slot="end" color="dark"><h5>RM{{ model?.grandTotal }}</h5></ion-text>
+      <ion-text slot="end" color="dark"
+        ><h5>RM{{ model?.grandTotal }}</h5></ion-text
+      >
     </ion-item>
   </ion-list>
 </ion-content>
@@ -84,7 +73,12 @@
   <ion-toolbar>
     <ion-row *ngIf="!location?.lat">
       <ion-col size="6">
-        <ion-button expand="block" fill="outline" color="success" (click)="onAddAddress()">
+        <ion-button
+          expand="block"
+          fill="outline"
+          color="success"
+          (click)="onAddAddress()"
+        >
           ADD ADRESS
         </ion-button>
       </ion-col>
@@ -96,7 +90,12 @@
     </ion-row>
 
     <ion-item lines="none" *ngIf="location?.lat">
-      <ion-button slot="end" (click)="onChangeAddress()" size="small" fill="clear">
+      <ion-button
+        slot="end"
+        (click)="onChangeAddress()"
+        size="small"
+        fill="clear"
+      >
         Change
       </ion-button>
       <ion-icon slot="start" name="home-outline"></ion-icon>
@@ -120,10 +119,12 @@
           </ion-label>
         </ion-item>
       </ion-col>
-      <ion-col size="6" class="ion-text-center colStyle" (click)="onMakePayment()">
-        <ion-button color="white" fill="clear">
-          MAKE PAYMENT
-        </ion-button>
+      <ion-col
+        size="6"
+        class="ion-text-center colStyle"
+        (click)="onMakePayment()"
+      >
+        <ion-button color="white" fill="clear"> MAKE PAYMENT </ion-button>
       </ion-col>
     </ion-row>
   </ion-toolbar>
