@@ -54,4 +54,12 @@ h6 {
     border-bottom: 0.1rem solid var(--ion-color-light);
   }
 
+  .dashedBorderBottom {
+    border-bottom: 1px dashed var(--ion-color-medium);
+  }
 
+ion-label {
+    p {
+        font-size: 0.8rem;
+    }
+}
