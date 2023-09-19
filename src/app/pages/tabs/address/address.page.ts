@@ -12,4 +12,8 @@ export class AddressPage implements OnInit {
   ngOnInit() {
   }
 
+  onEditAddress() {}
+
+  onDeleteAddress() {}
+
 }
