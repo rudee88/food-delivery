@@ -14,6 +14,8 @@
   <div *ngIf="isLoading" class="ion-text-center align-spinner">
     <ion-spinner color="primary"></ion-spinner>
   </div>
+
+  <app-empty-screen *ngIf="!isLoading && addresses?.length === 0" [model]="model"></app-empty-screen>
   
   <ion-list *ngIf="!isLoading && addresses?.length > 0">
     <ion-item-divider>SAVED ADDRESSES</ion-item-divider>

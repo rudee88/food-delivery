@@ -37,7 +37,7 @@
     </ion-list>
   </ng-container>
 
-  <ion-item lines="none" class="borderBottom">
+  <ion-item lines="none" class="borderBottom" *ngIf="model?.restaurant">
     <ion-icon slot="start" name="list-outline"></ion-icon>
     <ion-input
       type="text"
@@ -46,7 +46,7 @@
     ></ion-input>
   </ion-item>
 
-  <ion-list class="borderBottom">
+  <ion-list class="borderBottom" *ngIf="model?.restaurant">
     <ion-list-header>
       <ion-label color="tertiary">Bill Detail</ion-label>
     </ion-list-header>

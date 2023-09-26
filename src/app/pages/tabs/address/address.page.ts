@@ -1,46 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit} from '@angular/core';
+
 import { GlobalService } from 'src/app/services/global/global.service';
+import { AddressService } from './../../../services/address/address.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-address',
   templateUrl: './address.page.html',
   styleUrls: ['./address.page.scss'],
 })
-export class AddressPage implements OnInit {
+export class AddressPage implements OnInit, OnDestroy {
   isLoading: boolean;
   addresses: any[] = [];
+  addressesSub: Subscription;
+  model: any = {
+    title: 'No Addresses Added Yet',
+    icon: 'location-outline'
+  };
 
-  constructor(private globalService: GlobalService) {}
+  constructor(private globalService: GlobalService, private addressService: AddressService) {}
 
   ngOnInit() {
+    this.addressesSub = this.addressService.addresses.subscribe(address => {
+      console.log('addresses:', address);
+      if (address instanceof Array) {
+        this.addresses = address;
+      } else {
+        if (address?.delete) {
+          this.addresses = this.addresses.filter(x => x.id != address.id);
+        } else if (address?.update) {
+          const index = this.addresses.findIndex(x => x.id == address.id);
+          this.addresses[index] = address;
+        } else {
+          this.addresses = this.addresses.concat(address);
+        }
+      }
+    });
     this.getAddresess();
   }
 
-  getAddresess() {
+  async getAddresess() {
     this.isLoading = true;
-    setTimeout(() => {
-      this.addresses = [
-        {
-          address: 'Bandar Baru Ampang, Selangor',
-          house: '30A, 1st Floor',
-          id: 'djkfda73k2',
-          landmark: 'Ampang',
-          lat: '3.144665133429708',
-          lng: '101.7688121380485',
-          title: 'Work',
-          user_id: '1',
-        },
-        {
-          address: 'Jalan Gombak, Kuala Lumpur',
-          house: '59-211-A',
-          id: 'kjadjds341',
-          landmark: 'Batu 4',
-          lat: '3.203287561584573',
-          lng: '101.70513540425516',
-          title: 'Home',
-          user_id: '1',
-        },
-      ];
+    setTimeout(async() => {
+      await this.addressService.getAddresses();
       this.isLoading = false;
     }, 1000);
   }
@@ -51,5 +53,33 @@ export class AddressPage implements OnInit {
 
   onEditAddress(address) {}
 
-  onDeleteAddress(address) {}
+  onDeleteAddress(address) {
+    console.log('address: ', address);
+    this.globalService.showAlert(
+      'Are you sure you want to delete this address?',
+      'Confirm',
+      [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancel');
+            return;
+          }
+        },
+        {
+          text: 'Yes',
+          handler: async () => {
+            this.globalService.showLoader();
+            await this.addressService.deleteAddress(address);
+            this.globalService.hideLoader();
+          }
+        }
+      ]
+    );
+  }
+
+  ngOnDestroy(): void {
+      if (this.addressesSub) this.addressesSub.unsubscribe();
+  }
 }
