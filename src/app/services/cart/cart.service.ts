@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { StorageService } from '../storage/storage.service';
+import { GlobalService } from '../global/global.service';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
   model: any = {};
@@ -13,10 +16,13 @@ export class CartService {
     return this._cart.asObservable();
   }
 
-  constructor() { }
+  constructor(
+    private storageService: StorageService,
+    private globalService: GlobalService
+    ) {}
 
   getCart() {
-    return Preferences.get({ key: 'cart' });
+    return this.storageService.getStorage('cart');
   }
 
   async getCartData() {
@@ -24,11 +30,12 @@ export class CartService {
     if (data?.value) {
       this.model = await JSON.parse(data.value);
       console.log('data: ', this.model);
-      this.calculate();
+      await this.calculate();
+      this._cart.next(this.model);
     }
   }
 
-  quantityPlus(index) {
+  async quantityPlus(index) {
     try {
       console.log(this.model.items[index]);
       if (!this.model.items[index] || this.model.items[index].quantity == 0) {
@@ -36,22 +43,31 @@ export class CartService {
       } else {
         this.model.items[index].quantity += 1; // this.items[index].quantity = this.items[index].quantity + 1
       }
-      this.calculate();
+      await this.calculate();
+      this._cart.next(this.model);
     } catch (e) {
       console.log(e);
+      throw e;
     }
   }
 
-  quantityMinus(index) {
-    if (this.model.items[index].quantity !== 0) {
-      this.model.items[index].quantity -= 1; // this.model.items[index].quantity = this.model.items[index].quantity - 1
-    } else {
-      this.model.items[index].quantity = 0;
+  async quantityMinus(index) {
+    try {
+      if (this.model.items[index].quantity !== 0) {
+        this.model.items[index].quantity -= 1; // this.model.items[index].quantity = this.model.items[index].quantity - 1
+      } else {
+        this.model.items[index].quantity = 0;
+      }
+      await this.calculate();
+      this._cart.next(this.model);
+    } catch (e) {
+      console.log(e);
+      throw e;
     }
   }
 
   async calculate() {
-    let item = this.model.items.filter(x => x.quantity > 0);
+    let item = this.model.items.filter((x) => x.quantity > 0);
     this.model.items = item;
     this.model.totalPrice = 0;
     this.model.totalItem = 0;
@@ -65,7 +81,9 @@ export class CartService {
     });
     this.model.deliveryCharge = this.deliveryCharge;
     this.model.totalPrice = parseFloat(this.model.totalPrice).toFixed(2);
-    this.model.grandTotal = (parseFloat(this.model.totalPrice) + parseFloat(this.model.deliveryCharge)).toFixed(2);
+    this.model.grandTotal = (
+      parseFloat(this.model.totalPrice) + parseFloat(this.model.deliveryCharge)
+    ).toFixed(2);
     if (this.model.totalItem == 0) {
       this.model.totalItem = 0;
       this.model.totalPrice = 0;
@@ -76,8 +94,16 @@ export class CartService {
     console.log('cart: ', this.model);
   }
 
-  clearCart() {
-
+  async clearCart() {
+    this.globalService.showLoader()
+    await this.storageService.removeStorage('cart');
+    this._cart.next(null);
+    this.globalService.hideLoader();
   }
- 
+
+  saveCart(model?) {
+    if (model) this.model = model;
+    this.storageService.setStorage('cart', JSON.stringify(this.model));
+    // this._cart.next(this.model);
+  }
 }

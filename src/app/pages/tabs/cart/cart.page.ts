@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { CartService } from './../../../services/cart/cart.service';
 import { OrderService } from '../../../services/order/order.service';
 import { GlobalService } from './../../../services/global/global.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -22,31 +23,33 @@ export class CartPage implements OnInit {
   deliveryCharge = 20;
   instruction: any;
   location: any = {};
+  cartSub: Subscription;
 
   constructor(
     private router: Router, 
     private orderService: OrderService,
     private navCtrl: NavController,
     private globalService: GlobalService,
-    private cartService: CartService
+    private cartService: CartService,
     ) { }
 
   ngOnInit() {
+    this.cartSub = this.cartService.cart.subscribe(cart => {
+      this.model = cart;
+      if (!this.model) this.location = {};
+    });
     this.checkUrl();
-    this.getModel();
+    this.getData();
   }
 
-  async getModel() {
+  async getData() {
+    await this.checkUrl;
     this.location = {
       lat: 3.143043190411341, 
       lng: 101.76289370565321,
       address: 'Ampang, Selangor'
     }
-  }
-
-
-  clearCart() {
-    return Preferences.remove({key: 'cart'});
+    await this.cartService.getCartData();
   }
 
   checkUrl() {
@@ -84,6 +87,7 @@ export class CartPage implements OnInit {
     try {
       const data = {
         restaurant_id: this.model.restaurant.uid,
+        instruction: this.instruction ? this.instruction : '',
         res: this.model.restaurant,
         order: JSON.stringify(this.model.items),
         time: moment().format('lll'),
@@ -97,7 +101,7 @@ export class CartPage implements OnInit {
       console.log('order: ', data);
       await this.orderService.placeOrder(data);
       //clear cart
-      this.clearCart();
+      this.cartService.clearCart();
       this.globalService.successToast('Your Order is Placed Successfully');
       this.navCtrl.navigateRoot(['tabs/account']);
     } catch(e) {
@@ -107,6 +111,13 @@ export class CartPage implements OnInit {
 
   onScrollToBottom() {
     this.content.scrollToBottom(500);
+  }
+
+  ionViewWillLeave() {
+    console.log('ionViewWillLeave Cart Page');
+    if (this.model?.item && this.model.item.length > 0) {
+      this.cartService.saveCart();
+    }
   }
 
 }
