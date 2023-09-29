@@ -19,7 +19,7 @@ export class CartService {
   constructor(
     private storageService: StorageService,
     private globalService: GlobalService
-    ) {}
+  ) {}
 
   getCart() {
     return this.storageService.getStorage('cart');
@@ -35,19 +35,52 @@ export class CartService {
     }
   }
 
-  async quantityPlus(index) {
+  alertClearCart(index, items, data?) {
+    this.globalService.showAlert(
+      'Your cart contain items from a different restaurant. Would you like to reset your cart before browsing a restaurant?',
+      'Items already in cart',
+      [
+        {
+          text: 'No',
+          role: 'cancel',
+          handler: () => {
+            return;
+          },
+        },
+        {
+          text: 'Yes',
+          handler: () => {
+            this.clearCart();
+            this.model = {};
+            this.quantityPlus(index, items, data);
+          },
+        },
+      ]
+    );
+  }
+
+  async quantityPlus(index, items?, restaurant?) {
     try {
-      console.log(this.model.items[index]);
-      if (!this.model.items[index] || this.model.items[index].quantity == 0) {
+      if(items) {
+        console.log('model: ', this.model);
+        this.model.items = [...items];
+      }
+      if(restaurant) {
+        this.model.restaurant = {}; 
+        this.model.restaurant = restaurant; 
+      }
+      console.log('q plus: ', this.model.items[index]);
+      // this.model.items[index].quantity += 1;
+      if(!this.model.items[index].quantity || this.model.items[index].quantity == 0) {
         this.model.items[index].quantity = 1;
       } else {
-        this.model.items[index].quantity += 1; // this.items[index].quantity = this.items[index].quantity + 1
+        this.model.items[index].quantity += 1; // this.model.items[index].quantity = this.model.items[index].quantity + 1
       }
       await this.calculate();
       this._cart.next(this.model);
-    } catch (e) {
+    } catch(e) {
       console.log(e);
-      throw e;
+      throw(e);
     }
   }
 
@@ -95,7 +128,7 @@ export class CartService {
   }
 
   async clearCart() {
-    this.globalService.showLoader()
+    this.globalService.showLoader();
     await this.storageService.removeStorage('cart');
     this._cart.next(null);
     this.globalService.hideLoader();

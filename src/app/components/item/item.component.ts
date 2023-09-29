@@ -17,11 +17,11 @@ export class ItemComponent  implements OnInit {
   ngOnInit() {}
 
   onQuantityPlus() {
-    this.add.emit(this.index);
+    this.add.emit(this.item);
   }
 
   onQuantityMinus() {
-    this.minus.emit(this.index);
+    this.minus.emit(this.item);
   }
 
 }

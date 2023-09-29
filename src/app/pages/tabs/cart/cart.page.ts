@@ -35,8 +35,10 @@ export class CartPage implements OnInit {
 
   ngOnInit() {
     this.cartSub = this.cartService.cart.subscribe(cart => {
+      console.log('cart page: ', cart);
       this.model = cart;
       if (!this.model) this.location = {};
+      console.log('cart page model: ', this.model);
     });
     this.checkUrl();
     this.getData();

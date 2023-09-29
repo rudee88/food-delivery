@@ -131,6 +131,16 @@ export class ApiService {
     {
       id: 'e00',
       name: 'Italian',
+      uid: '2a',
+    },
+    {
+      id: 'e0',
+      name: 'Mexican',
+      uid: '2a',
+    },
+    {
+      id: 'e00',
+      name: 'Italian',
       uid: '1a',
     },
     {
@@ -141,6 +151,20 @@ export class ApiService {
   ];
 
   allItems = [
+    {
+      category_id: 'e0',
+      cover:
+        'https://www.tasteofhome.com/wp-content/uploads/2018/01/Classic-Wilted-Lettuce-Salad_EXPS_FT20_4535_F_0623_1-3.jpg?fit=700,1024',
+      desc: 'Great in taste',
+      id: 'i2',
+      name: 'Caprese Salad',
+      price: 20,
+      rating: 0,
+      status: true,
+      uid: '2a',
+      variation: false,
+      veg: true,
+    },
     {
       category_id: 'e00',
       cover:
