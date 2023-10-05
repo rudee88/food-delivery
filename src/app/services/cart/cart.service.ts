@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 
 import { StorageService } from '../storage/storage.service';
 import { GlobalService } from '../global/global.service';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,8 @@ export class CartService {
 
   constructor(
     private storageService: StorageService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private router: Router
   ) {}
 
   getCart() {
@@ -35,9 +37,11 @@ export class CartService {
     }
   }
 
-  alertClearCart(index, items, data?) {
+  alertClearCart(index, items, data?, order?) {
     this.globalService.showAlert(
-      'Your cart contain items from a different restaurant. Would you like to reset your cart before browsing a restaurant?',
+      order
+        ? 'Would you like to reset your cart before re-ordering from this restaurant?'
+        : 'Your cart contain items from a different restaurant. Would you like to reset your cart before browsing a restaurant?',
       'Items already in cart',
       [
         {
@@ -52,35 +56,54 @@ export class CartService {
           handler: () => {
             this.clearCart();
             this.model = {};
-            this.quantityPlus(index, items, data);
+            if (order) {
+              this.orderToCart(order);
+            } else this.quantityPlus(index, items, data);
           },
         },
       ]
     );
   }
 
+   async orderToCart(order) {
+    console.log('reorder:', order);
+    const data = {
+      restaurant: order.restaurant,
+      items: order.order
+    };
+    this.model = data;
+    await this.calculate();
+    this.saveCart();
+    console.log('model: ', this.model);
+    this._cart.next(this.model);
+    this.router.navigate(['/', 'tabs', 'restaurants', order.restaurant.uid]);
+  }
+
   async quantityPlus(index, items?, restaurant?) {
     try {
-      if(items) {
+      if (items) {
         console.log('model: ', this.model);
         this.model.items = [...items];
       }
-      if(restaurant) {
-        this.model.restaurant = {}; 
-        this.model.restaurant = restaurant; 
+      if (restaurant) {
+        this.model.restaurant = {};
+        this.model.restaurant = restaurant;
       }
       console.log('q plus: ', this.model.items[index]);
       // this.model.items[index].quantity += 1;
-      if(!this.model.items[index].quantity || this.model.items[index].quantity == 0) {
+      if (
+        !this.model.items[index].quantity ||
+        this.model.items[index].quantity == 0
+      ) {
         this.model.items[index].quantity = 1;
       } else {
         this.model.items[index].quantity += 1; // this.model.items[index].quantity = this.model.items[index].quantity + 1
       }
       await this.calculate();
       this._cart.next(this.model);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
-      throw(e);
+      throw e;
     }
   }
 
@@ -122,7 +145,7 @@ export class CartService {
       this.model.totalPrice = 0;
       this.model.grandTotal = 0;
       await this.clearCart();
-      this.model = null;
+      this.model = {};
     }
     console.log('cart: ', this.model);
   }

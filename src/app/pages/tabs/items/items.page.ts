@@ -53,13 +53,13 @@ export class ItemsPage implements OnInit, OnDestroy {
     
       this.cartSub = this.cartService.cart.subscribe((cart) => {
         console.log('cart items: ', cart);
-        if (cart) {
+        if (cart && cart?.totalItem > 0) {
           this.cartData = {};
           this.storeData = {};
-          this.storeData = cart;
-          this.cartData.totalItem = this.storeData.totalItem;
-          this.cartData.totalPrice = this.storeData.totalPrice;
           if (cart?.restaurant?.uid == this.id) {
+            this.storeData = cart;
+            this.cartData.totalItem = this.storeData.totalItem;
+            this.cartData.totalPrice = this.storeData.totalPrice;
             this.allItems.forEach((element) => {
               cart.items.forEach((element2) => {
                 if (element.id != element2.id) return;
@@ -68,6 +68,13 @@ export class ItemsPage implements OnInit, OnDestroy {
             });
             console.log('allItems: ', this.allItems);
             this.cartData.items = this.allItems.filter((x) => x.quantity);
+            if (this.veg == true) {
+              this.items = this.allItems.filter((x) => x.veg === true);
+            } else this.items = [...this.allItems];
+          } else {
+            this.allItems.forEach((element) => {
+              element.quantity = 0;
+            });
             if (this.veg == true) {
               this.items = this.allItems.filter((x) => x.veg === true);
             } else this.items = [...this.allItems];
@@ -128,6 +135,7 @@ export class ItemsPage implements OnInit, OnDestroy {
         !this.storeData.restaurant ||
         (this.storeData.restaurant && this.storeData.restaurant.uid == this.id)
       ) {
+        console.log('index item: ', this.allItems);
         this.cartService.quantityPlus(index, this.allItems, this.data);
       } else {
         //alert for clear cart

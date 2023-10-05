@@ -4,51 +4,60 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApiService {
-  banners = [
-    { banner: 'assets/imgs/1.jpg' },
-    { banner: 'assets/imgs/2.jpg' },
-    { banner: 'assets/imgs/3.jpg' },
+  banners = [  
+    {banner: 'assets/imgs/1.jpg'},
+    {banner: 'assets/imgs/2.jpg'},
+    {banner: 'assets/imgs/3.jpg'}  
   ];
-
+  
   restaurants = [
     {
-      uid: '1a',
+      uid: '12wefdss',
       cover: 'assets/imgs/1.jpg',
       name: 'Stayfit',
       short_name: 'stayfit',
-      cuisines: ['Italian', 'Mexican'],
+      cuisines: [
+        'Italian',
+        'Mexican'
+      ],
       rating: 5,
       delivery_time: 25,
       distance: 2.5,
-      price: 100,
+      price: 100
     },
     {
-      uid: '2a',
+      uid: '12wefdefsdss',
       cover: 'assets/imgs/2.jpg',
       name: 'Stayfit1',
       short_name: 'stayfit1',
-      cuisines: ['Italian', 'Mexican'],
+      cuisines: [
+        'Italian',
+        'Mexican'
+      ],
       rating: 5,
       delivery_time: 25,
       distance: 2.5,
-      price: 100,
+      price: 100
     },
     {
-      uid: '3a',
+      uid: '12wefdssrete',
       cover: 'assets/imgs/3.jpg',
       name: 'Stayfit2',
       short_name: 'stayfit2',
-      cuisines: ['Italian', 'Mexican'],
+      cuisines: [
+        'Italian',
+        'Mexican'
+      ],
       rating: 5,
       delivery_time: 25,
       distance: 2.5,
-      price: 100,
+      price: 100
     },
   ];
 
   allRestaurants = [
     {
-      uid: '1a',
+      uid: '12wefdss',
       cover: 'assets/imgs/1.jpg',
       name: 'Stayfit',
       short_name: 'stayfit',
@@ -61,7 +70,7 @@ export class ApiService {
       price: 100
     },
     {
-      uid: '2a',
+      uid: '12wefdefsdss',
       cover: 'assets/imgs/2.jpg',
       name: 'Stayfit1',
       short_name: 'stayfit1',
@@ -74,7 +83,7 @@ export class ApiService {
       price: 100
     },
     {
-      uid: '3a',
+      uid: '12wefdssrete',
       cover: 'assets/imgs/3.jpg',
       name: 'Stayfit2',
       short_name: 'stayfit2',
@@ -90,294 +99,179 @@ export class ApiService {
 
   restaurants1 = [
     {
-      uid: '1a',
+      uid: '12wefdss',
       cover: 'assets/imgs/1.jpg',
       name: 'Stayfit',
       short_name: 'stayfit',
-      address: 'Ampang, Selangor',
-      cuisines: ['Italian', 'Mexican'],
+      address: 'Karol Bagh, New Delhi',
+      cuisines: [
+        'Italian',
+        'Mexican'
+      ],
       rating: 5,
       delivery_time: 25,
       distance: 2.5,
-      price: 100,
+      price: 100
     },
     {
-      uid: '2a',
+      uid: '12wefdefsdss',
       cover: 'assets/imgs/2.jpg',
       name: 'Stayfit1',
       short_name: 'stayfit1',
-      address: 'Setapak, Kuala Lumpur',
-      cuisines: ['Italian', 'Mexican'],
+      cuisines: [
+        'Italian',
+        'Mexican'
+      ],
       rating: 5,
       delivery_time: 25,
+      address: 'Karol Bagh, New Delhi',
       distance: 2.5,
-      price: 100,
+      price: 100
     },
     {
-      uid: '3a',
+      uid: '12wefdssrete',
       cover: 'assets/imgs/3.jpg',
       name: 'Stayfit2',
       short_name: 'stayfit2',
-      address: 'Bangsar, Selangor',
-      cuisines: ['Italian', 'Mexican'],
+      cuisines: [
+        'Italian',
+        'Mexican'
+      ],
       rating: 5,
       delivery_time: 25,
+      address: 'Karol Bagh, New Delhi',
       distance: 2.5,
-      price: 100,
+      price: 100
     },
   ];
-
-  categories: any = [
+  
+  categories: any[] = [
     {
-      id: 'e00',
-      name: 'Italian',
-      uid: '2a',
+      id: "e0",
+      name: "Mexican",
+      uid: "12wefdefsdss"
     },
     {
-      id: 'e0',
-      name: 'Mexican',
-      uid: '2a',
+      id: "e00",
+      name: "Italian",
+      uid: "12wefdss"
     },
     {
-      id: 'e00',
-      name: 'Italian',
-      uid: '1a',
+      id: "e0",
+      name: "Mexican",
+      uid: "12wefdss"
     },
-    {
-      id: 'e0',
-      name: 'Mexican',
-      uid: '1a',
-    },
-  ];
+  ]; 
 
   allItems = [
+    
     {
-      category_id: 'e0',
-      cover:
-        'https://www.tasteofhome.com/wp-content/uploads/2018/01/Classic-Wilted-Lettuce-Salad_EXPS_FT20_4535_F_0623_1-3.jpg?fit=700,1024',
-      desc: 'Great in taste',
-      id: 'i2',
-      name: 'Caprese Salad',
-      price: 20,
+      category_id: "e0",
+      cover: "assets/imgs/1.jpg",
+      desc: "Great in taste",
+      id: "i2",
+      name: "Caprese Salad",
+      price: 200,
       rating: 0,
       status: true,
-      uid: '2a',
+      uid: "12wefdefsdss",
       variation: false,
-      veg: true,
-    },
+      veg: true
+  },
     {
-      category_id: 'e00',
-      cover:
-        'https://hips.hearstapps.com/hmg-prod/images/classic-cheese-pizza-recipe-2-64429a0cb408b.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*',
-      desc: 'Great in taste',
-      id: 'i1',
-      name: 'pizza',
-      price: 30.3,
-      rating: 0,
-      status: true,
-      uid: '1a',
-      variation: false,
-      veg: false,
-    },
-    {
-      category_id: 'e0',
-      cover:
-        'https://www.tasteofhome.com/wp-content/uploads/2018/01/Classic-Wilted-Lettuce-Salad_EXPS_FT20_4535_F_0623_1-3.jpg?fit=700,1024',
-      desc: 'Great in taste',
-      id: 'i2',
-      name: 'Caprese Salad',
-      price: 20,
-      rating: 0,
-      status: true,
-      uid: '1a',
-      variation: false,
-      veg: true,
-    },
-    {
-      category_id: 'e00',
-      cover:
-        'https://www.thecountrycook.net/wp-content/uploads/2023/02/thumbnail-Penne-Pasta-with-Tomato-Sauce-scaled.jpg',
-      desc: 'Great in taste',
-      id: 'i3',
-      name: 'Pasta',
-      price: 25,
-      rating: 0,
-      status: true,
-      uid: '1a',
-      variation: false,
-      veg: false,
-    },
-  ];
-
-  addresses = [
-    {
-      address: 'Bandar Baru Ampang, Selangor',
-      house: '30A, 1st Floor',
-      id: 'djkfda73k2',
-      landmark: 'Ampang',
-      lat: '3.144665133429708',
-      lng: '101.7688121380485',
-      title: 'Work',
-      user_id: '1',
-    },
-    {
-      address: 'Jalan Gombak, Kuala Lumpur',
-      house: '59-211-A',
-      id: 'kjadjds341',
-      landmark: 'Batu 4',
-      lat: '3.203287561584573',
-      lng: '101.70513540425516',
-      title: 'Home',
-      user_id: '1',
-    },
-  ];
-
-  orders: any[] = [
-    {
-      address: {
-        address: 'Bandar Baru Ampang, Ampang 68000, Malaysia',
-        house: 'dsgd',
-        id: 'cLQdnS8YXk5HTDfM3UQC',
-        landmark: 'fdgs',
-        lat: 26.108991978867923,
-        lng: 91.79069981213378,
-        title: 'yui',
-        user_id: 'UA5JWxgjDOYgfXe92H0pFHwulTz2',
-      },
-      deliveryCharge: 20,
-      grandTotal: '540.00',
-      id: '5aG0RsPuze8NX00B7uRP',
-      order: [
-        {
-          category_id: 'e10',
-          cover: 'assets/imgs/baha.jpg',
-          desc: 'Great in taste',
-          id: 'i32',
-          name: 'Bahamas',
-          price: 270,
-          quantity: 1,
-          rating: 0,
-          status: true,
-          uid: 'r5',
-          variation: false,
-          veg: false,
-        },
-        {
-          category_id: 'e10',
-          cover: 'assets/imgs/mofo.jpg',
-          desc: 'Great in taste',
-          id: 'i33',
-          name: 'Mofongo',
-          price: 250,
-          quantity: 1,
-          rating: 0,
-          status: true,
-          uid: 'r5',
-          variation: false,
-          veg: true,
-        },
-      ],
-      paid: 'COD',
-      restaurant: {
-        address: 'Christan Basti, India',
-        city: '909090567',
-        closeTime: '21:00',
-        cover: '',
-        cuisines: ['Caribbean food', 'North Indian', 'Vietnamese'],
-        delivery_time: 25,
-        description: 'dd',
-        email: 'DosaPlaza@gmail.com',
-        latitude: 26.1286243,
-        longitude: 91.8012675,
-        id: 'r5',
-        isClose: true,
-        name: 'DosaPlaza',
-        openTime: '07:00',
-        phone: 6619563867,
-        price: 27,
-        rating: 4.7,
-        short_name: 'stayfit',
-        status: 'open',
-        totalRating: 13,
-      },
-      restaurant_id: 'r5',
-      status: 'created',
-      time: 'Jul 6, 2020 11:44 AM',
-      total: '520.00',
-      user_id: '1',
-    },
-    {
-      address: {
-        address: 'Bandar Baru Ampang, Ampang 68000, Malaysia',
-        house: 'dsgd',
-        id: 'cLQdnS8YXk5HTDfM3UQC',
-        landmark: 'fdgs',
-        lat: 26.108991978867923,
-        lng: 91.79069981213378,
-        title: 'yui',
-        user_id: 'UA5JWxgjDOYgfXe92H0pFHwulTz2',
-      },
-      deliveryCharge: 20,
-      grandTotal: '440.00',
-      id: '5aG0RsPuze8NX00B7uR1',
-      order: [
-        {
-          category_id: 'e00',
-          cover: 'assets/imgs/pizza.jpg',
-          desc: 'Great in taste',
-          id: 'i1',
-          name: 'Pizza',
-          price: 120,
-          quantity: 1,
-          rating: 0,
-          status: true,
-          uid: 'r1',
-          variation: false,
-          veg: false,
-        },
-        {
-          category_id: 'e00',
-          cover: 'assets/imgs/pasta.jpg',
-          desc: 'Great in taste',
-          id: 'i3',
-          name: 'Pasta',
-          price: 150,
-          quantity: 2,
-          rating: 0,
-          status: true,
-          uid: 'r1',
-          variation: false,
-          veg: false,
-        },
-      ],
-      paid: 'COD',
-      restaurant: {
-        address: 'Beltola Tiniali, India',
-        city: '909090271',
-        closeTime: '20:00',
-        cover: 'assets/imgs/restaurant-1.jpg',
-        cuisines: ['Italian', 'Mexican'],
-        delivery_time: 25,
-        description: 'dd',
-        email: 'stay@fit.com',
-        id: 'r1',
-        isClose: true,
-        latitude: 26.1286243,
-        longitude: 91.8012675,
-        name: 'Stayfit',
-        openTime: '08:00',
-        phone: 6786745745,
-        price: 25,
+        category_id: "e00",
+        cover: "assets/imgs/2.jpg",
+        desc: "Great in taste",
+        id: "i1",
+        name: "Pizza",
+        price: 120,
         rating: 0,
-        short_name: 'stayfit',
-        status: 'open',
-        totalRating: 0,
+        status: true,
+        uid: "12wefdss",
+        variation: false,
+        veg: false
+    },
+    {
+        category_id: "e0",
+        cover: "assets/imgs/1.jpg",
+        desc: "Great in taste",
+        id: "i2",
+        name: "Caprese Salad",
+        price: 200,
+        rating: 0,
+        status: true,
+        uid: "12wefdss",
+        variation: false,
+        veg: true
+    },
+    {
+        category_id: "e00",
+        cover: "assets/imgs/3.jpg",
+        desc: "Great in taste",
+        id: "i3",
+        name: "Pasta",
+        price: 150.50,
+        rating: 0,
+        status: true,
+        uid: "12wefdss",
+        variation: false,
+        veg: false
+    },
+  ];
+
+  addresses: any[] = [     
+    {address: "Fancy Bazaar, India", house: "2nd Floor", id: "7Kox63KlggTvV7ebRKar", landmark: "Fancy Bazar", lat: 26.1830738, lng: 91.74049769999999, title: "Fancy", user_id: "1"},
+    {address: "Kanuat palace, India", house: "Ground Floor", id: "8Kox63KlggTvV7ebRKar", landmark: "Bazar", lat: 26.1830738, lng: 91.74049769999999, title: "Work", user_id: "1"}
+  ];
+
+  orders: any[] = [      
+    {
+      address: {address: "Indira Nagar Rd, Borsojai, Basistha 781029, India", house: "dsgd", id: "cLQdnS8YXk5HTDfM3UQC", landmark: "fdgs", lat: 26.108991978867923, lng: 91.79069981213378, title: "yui", user_id: "1" }, 
+      deliveryCharge: 20,
+      grandTotal: "540.00",
+      id: "5aG0RsPuze8NX00B7uRP",
+      order: [
+        {category_id: "e0", cover: "assets/imgs/salad.jpg", desc: "Great in taste", id: "i2", name: "Caprese Salad", price: 200, rating: 0, status: true, uid: "12wefdefsdss", variation: false, veg: true, quantity: 1},
+      ],
+      paid: "COD",  
+      restaurant: 
+      // {address: "Christan Basti, India",  city: "909090567", closeTime: "21:00", cover: "", cuisines: ["Caribbean food", "North Indian", "Vietnamese"], delivery_time: 25, description: "dd", email: "DosaPlaza@gmail.com", latitude: 26.1286243, longitude: 91.8012675, uid: "12wefdefsdss", isClose: true, name: "DosaPlaza", openTime: "07:00", phone: 6619563867, price: 27, rating: 4.7, short_name: "stayfit", status: "open", totalRating: 13},
+      {
+        uid: '12wefdefsdss',
+        cover: 'assets/imgs/2.jpg',
+        name: 'Stayfit1',
+        short_name: 'stayfit1',
+        cuisines: [
+          'Italian',
+          'Mexican'
+        ],
+        rating: 5,
+        delivery_time: 25,
+        distance: 2.5,
+        price: 100
       },
-      restaurant_id: 'r1',
-      status: 'Delivered',
-      time: 'Jul 7, 2020 11:44 AM',
-      total: '420.00',
-      user_id: '1',
+      restaurant_id: "12wefdefsdss",  
+      status: "created",
+      time: "Jul 6, 2020 11:44 AM",
+      total: "520.00",
+      user_id: "1"
+    },
+    {
+      address: {address: "Indira Nagar Rd, Borsojai, Basistha 781029, India", house: "dsgd", id: "cLQdnS8YXk5HTDfM3UQC", landmark: "fdgs", lat: 26.108991978867923, lng: 91.79069981213378, title: "yui", user_id: "1" }, 
+      deliveryCharge: 20,
+      grandTotal: "440.00",
+      id: "5aG0RsPuze8NX00B7uR1",
+      order: [
+        {category_id: "e00", cover: "assets/imgs/2.jpg", desc: "Great in taste", id: "i1", name: "Pizza", price: 120, quantity: 1, rating: 0, status: true, uid: "12wefdss", variation: false, veg: false},
+        {category_id: "e00", cover: "assets/imgs/1.jpg", desc: "Great in taste", id: "i3", name: "Pasta", price: 150, quantity: 2, rating: 0, status: true, uid: "12wefdss", variation: false, veg: false}
+      ],
+      paid: "COD",  
+      restaurant: {address: "Beltola Tiniali, India", city: "909090271", closeTime: "20:00", cover: "assets/imgs/1.jpg", cuisines: ["Italian", "Mexican"], delivery_time: 25, description: "dd", email: "stay@fit.com", uid: "12wefdss", isClose: true, latitude: 26.1286243, longitude: 91.8012675, name: "Stayfit", openTime: "08:00", phone: 6786745745, price: 25, rating: 0, short_name: "stayfit", status: "open", totalRating: 0},    
+      restaurant_id: "12wefdss",  
+      status: "Delivered",
+      time: "Jul 7, 2020 11:44 AM",
+      total: "420.00",
+      user_id: "1"
     },
   ];
 
