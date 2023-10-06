@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Restaurant } from './../../models/restaurant.model';
 import { Address } from './../../models/address.model';
+import { Category } from 'src/app/models/category.model';
 
 @Injectable({
   providedIn: 'root',
@@ -121,7 +122,7 @@ export class ApiService {
     },
   ];
 
-  categories: any[] = [
+  categories: Category[] = [
     {
       id: 'e0',
       name: 'Mexican',
