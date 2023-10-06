@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { StorageService } from '../storage/storage.service';
 import { GlobalService } from '../global/global.service';
-import { Router } from '@angular/router';
+import { Cart } from 'src/app/models/cart.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  model: any = {};
+  model = {} as Cart;
   deliveryCharge = 20;
-  private _cart = new BehaviorSubject<any>(null);
+  private _cart = new BehaviorSubject<Cart>(null);
 
   get cart() {
     return this._cart.asObservable();
@@ -55,7 +56,7 @@ export class CartService {
           text: 'Yes',
           handler: () => {
             this.clearCart();
-            this.model = {};
+            this.model = {} as Cart;
             if (order) {
               this.orderToCart(order);
             } else this.quantityPlus(index, items, data);
@@ -66,17 +67,17 @@ export class CartService {
   }
 
    async orderToCart(order) {
-    console.log('reorder:', order);
-    const data = {
-      restaurant: order.restaurant,
-      items: order.order
-    };
-    this.model = data;
-    await this.calculate();
-    this.saveCart();
-    console.log('model: ', this.model);
-    this._cart.next(this.model);
-    this.router.navigate(['/', 'tabs', 'restaurants', order.restaurant.uid]);
+    // console.log('reorder:', order);
+    // const data = {
+    //   restaurant: order.restaurant,
+    //   items: order.order
+    // };
+    // this.model = data;
+    // await this.calculate();
+    // this.saveCart();
+    // console.log('model: ', this.model);
+    // this._cart.next(this.model);
+    // this.router.navigate(['/', 'tabs', 'restaurants', order.restaurant.uid]);
   }
 
   async quantityPlus(index, items?, restaurant?) {
@@ -86,7 +87,7 @@ export class CartService {
         this.model.items = [...items];
       }
       if (restaurant) {
-        this.model.restaurant = {};
+        // this.model.restaurant = {};
         this.model.restaurant = restaurant;
       }
       console.log('q plus: ', this.model.items[index]);
@@ -133,19 +134,21 @@ export class CartService {
     item.forEach((element) => {
       this.model.totalItem += element.quantity;
       this.model.totalPrice +=
-        parseFloat(element.price) * parseFloat(element.quantity);
+        // parseFloat(element.price) * parseFloat(element.quantity);
+        element.price * element.quantity;
     });
     this.model.deliveryCharge = this.deliveryCharge;
-    this.model.totalPrice = parseFloat(this.model.totalPrice).toFixed(2);
-    this.model.grandTotal = (
-      parseFloat(this.model.totalPrice) + parseFloat(this.model.deliveryCharge)
-    ).toFixed(2);
+    // this.model.totalPrice = parseFloat(this.model.totalPrice).toFixed(2);
+    // this.model.grandTotal = (
+    //   parseFloat(this.model.totalPrice) + parseFloat(this.model.deliveryCharge)
+    // ).toFixed(2);
+    this.model.grandTotal = this.model.totalPrice + this.model.deliveryCharge;
     if (this.model.totalItem == 0) {
       this.model.totalItem = 0;
       this.model.totalPrice = 0;
       this.model.grandTotal = 0;
       await this.clearCart();
-      this.model = {};
+      this.model = {} as Cart;
     }
     console.log('cart: ', this.model);
   }
