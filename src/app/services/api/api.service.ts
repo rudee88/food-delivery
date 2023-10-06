@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+
+import { Restaurant } from './../../models/restaurant.model';
 import { Address } from './../../models/address.model';
 
 @Injectable({
@@ -11,7 +13,7 @@ export class ApiService {
     { banner: 'assets/imgs/3.jpg' },
   ];
 
-  restaurants = [
+  restaurants: Restaurant[] = [
     {
       uid: '12wefdss',
       cover: 'assets/imgs/1.jpg',
@@ -47,7 +49,7 @@ export class ApiService {
     },
   ];
 
-  allRestaurants = [
+  allRestaurants: Restaurant[] = [
     {
       uid: '12wefdss',
       cover: 'assets/imgs/1.jpg',
@@ -80,7 +82,7 @@ export class ApiService {
     },
   ];
 
-  restaurants1 = [
+  restaurants1: Restaurant[] = [
     {
       uid: '12wefdss',
       cover: 'assets/imgs/1.jpg',
