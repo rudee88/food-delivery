@@ -8,6 +8,7 @@ import { CartService } from './../../../services/cart/cart.service';
 import { OrderService } from '../../../services/order/order.service';
 import { GlobalService } from './../../../services/global/global.service';
 import { Subscription } from 'rxjs';
+import { Address } from 'src/app/models/address.model';
 
 @Component({
   selector: 'app-cart',

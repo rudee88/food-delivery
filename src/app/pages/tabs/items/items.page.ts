@@ -4,6 +4,7 @@ import { Preferences } from '@capacitor/preferences';
 import { NavController } from '@ionic/angular';
 import { Subscription, take } from 'rxjs';
 
+import { Restaurant } from 'src/app/models/restaurant.model';
 import { ApiService } from 'src/app/services/api/api.service';
 import { CartService } from 'src/app/services/cart/cart.service';
 
@@ -14,7 +15,7 @@ import { CartService } from 'src/app/services/cart/cart.service';
 })
 export class ItemsPage implements OnInit, OnDestroy {
   id: any;
-  data: any = {};
+  data = {} as Restaurant;
   items: any[] = [];
   veg: boolean = false;
   isLoading: boolean;
@@ -91,7 +92,7 @@ export class ItemsPage implements OnInit, OnDestroy {
   async getItems() {
     try {
       this.isLoading = true;
-      this.data = {};
+      this.data = {} as Restaurant;
       this.cartData = {};
       this.storeData = {};
       setTimeout(async () => {
