@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
 import { NavController } from '@ionic/angular';
 import { Subscription, take } from 'rxjs';
-import { Category } from 'src/app/models/category.model';
 
+import { Category } from 'src/app/models/category.model';
+import { Item } from 'src/app/models/item.model';
 import { Restaurant } from 'src/app/models/restaurant.model';
 import { ApiService } from 'src/app/services/api/api.service';
 import { CartService } from 'src/app/services/cart/cart.service';
@@ -17,7 +18,7 @@ import { CartService } from 'src/app/services/cart/cart.service';
 export class ItemsPage implements OnInit, OnDestroy {
   id: any;
   data = {} as Restaurant;
-  items: any[] = [];
+  items: Item[] = [];
   veg: boolean = false;
   isLoading: boolean;
   cartData: any = {};
@@ -28,7 +29,7 @@ export class ItemsPage implements OnInit, OnDestroy {
   };
   // restaurants: any[] = [];
   categories: Category[] = [];
-  allItems: any[] = [];
+  allItems: Item[] = [];
   cartSub: Subscription;
   routeSub: Subscription
 
@@ -103,6 +104,9 @@ export class ItemsPage implements OnInit, OnDestroy {
         this.data = data[0];
         this.categories = this.categories.filter((x) => x.uid === this.id);
         this.allItems = this.api.allItems.filter((x) => x.uid === this.id);
+        this.allItems.forEach((element, index) => {
+          this.allItems[index].quantity = 0;
+        });
         this.items = [...this.allItems];
         this.items.forEach((item) => {
           item.quantity = 0;

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Restaurant } from './../../models/restaurant.model';
 import { Address } from './../../models/address.model';
 import { Category } from 'src/app/models/category.model';
+import { Item } from 'src/app/models/item.model';
 
 @Injectable({
   providedIn: 'root',
@@ -140,7 +141,7 @@ export class ApiService {
     },
   ];
 
-  allItems = [
+  allItems : Item[] = [
     {
       category_id: 'e0',
       cover: 'assets/imgs/1.jpg',
