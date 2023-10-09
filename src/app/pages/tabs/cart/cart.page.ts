@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Preferences } from '@capacitor/preferences';
 import { IonContent, NavController } from '@ionic/angular';
 import * as moment from 'moment';
 
@@ -9,6 +8,7 @@ import { OrderService } from '../../../services/order/order.service';
 import { GlobalService } from './../../../services/global/global.service';
 import { Subscription } from 'rxjs';
 import { Address } from 'src/app/models/address.model';
+import { Cart } from 'src/app/models/cart.model';
 
 @Component({
   selector: 'app-cart',
@@ -20,10 +20,10 @@ export class CartPage implements OnInit {
   @ViewChild(IonContent, {static: false}) content: IonContent;
   urlCheck: any;
   url: any;
-  model: any = {};
+  model = {} as Cart;
   deliveryCharge = 20;
   instruction: any;
-  location: any = {};
+  location = {} as Address;
   cartSub: Subscription;
 
   constructor(
@@ -38,7 +38,7 @@ export class CartPage implements OnInit {
     this.cartSub = this.cartService.cart.subscribe(cart => {
       console.log('cart page: ', cart);
       this.model = cart;
-      if (!this.model) this.location = {};
+      if (!this.model) this.location = {} as Address;
       console.log('cart page model: ', this.model);
     });
     this.checkUrl();
@@ -47,11 +47,21 @@ export class CartPage implements OnInit {
 
   async getData() {
     await this.checkUrl;
-    this.location = {
-      lat: 3.143043190411341, 
-      lng: 101.76289370565321,
-      address: 'Ampang, Selangor'
-    }
+    // this.location = {
+    //   lat: 3.143043190411341, 
+    //   lng: 101.76289370565321,
+    //   address: 'Ampang, Selangor'
+    // }
+    this.location = new Address(
+      'address1',
+      'user1',
+      'Address 1',
+      'Bandar Baru Ampang',
+      'Jalan Wawasan 2/4',
+      '30A',
+      101.76289370565321,
+      101.76289370565321
+    );
     await this.cartService.getCartData();
   }
 
@@ -105,6 +115,7 @@ export class CartPage implements OnInit {
       await this.orderService.placeOrder(data);
       //clear cart
       this.cartService.clearCart();
+      this.model = {} as Cart;
       this.globalService.successToast('Your Order is Placed Successfully');
       this.navCtrl.navigateRoot(['tabs/account']);
     } catch(e) {
@@ -118,7 +129,7 @@ export class CartPage implements OnInit {
 
   ionViewWillLeave() {
     console.log('ionViewWillLeave Cart Page');
-    if (this.model?.item && this.model.item.length > 0) {
+    if (this.model?.items && this.model.items.length > 0) {
       this.cartService.saveCart();
     }
   }

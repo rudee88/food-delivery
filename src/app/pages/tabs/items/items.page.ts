@@ -155,7 +155,7 @@ export class ItemsPage implements OnInit, OnDestroy {
 
   onQuantityMinus(item) {
     const index = this.allItems.findIndex((x) => x.id === item.id);
-    this.cartService.quantityMinus(index);
+    this.cartService.quantityMinus(index, this.allItems);
   }
 
   async saveToCart() {

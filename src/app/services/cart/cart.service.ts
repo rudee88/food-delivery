@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { StorageService } from '../storage/storage.service';
 import { GlobalService } from '../global/global.service';
 import { Cart } from 'src/app/models/cart.model';
+import { Item } from 'src/app/models/item.model';
+import { Restaurant } from 'src/app/models/restaurant.model';
 
 @Injectable({
   providedIn: 'root',
@@ -80,7 +82,7 @@ export class CartService {
     // this.router.navigate(['/', 'tabs', 'restaurants', order.restaurant.uid]);
   }
 
-  async quantityPlus(index, items?, restaurant?) {
+  async quantityPlus(index, items?: Item[], restaurant?: Restaurant) {
     try {
       if (items) {
         console.log('model: ', this.model);
@@ -108,9 +110,13 @@ export class CartService {
     }
   }
 
-  async quantityMinus(index) {
+  async quantityMinus(index, items?: Item[]) {
     try {
-      if (this.model.items[index].quantity !== 0) {
+      if (items) {
+        console.log('model: ', this.model);
+        this.model.items = [...items];
+      }
+      if (this.model.items[index].quantity && this.model.items[index].quantity !== 0) {
         this.model.items[index].quantity -= 1; // this.model.items[index].quantity = this.model.items[index].quantity - 1
       } else {
         this.model.items[index].quantity = 0;
