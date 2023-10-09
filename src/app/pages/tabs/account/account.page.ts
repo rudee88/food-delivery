@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { OrderService } from 'src/app/services/order/order.service';
 import { CartService } from '../../../services/cart/cart.service';
+import { Order } from 'src/app/models/order.model';
 
 @Component({
   selector: 'app-account',
@@ -11,7 +12,7 @@ import { CartService } from '../../../services/cart/cart.service';
 export class AccountPage implements OnInit, OnDestroy {
   isLoading: boolean;
   profile: any = {};
-  orders: any[] = [];
+  orders: Order[] = [];
   ordersSub: Subscription;
 
   constructor(
@@ -22,18 +23,19 @@ export class AccountPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.ordersSub = this.orderService.orders.subscribe(order => {
       console.log('order data: ', order);
-      if (order instanceof Array) {
-        this.orders = order;
-      } else {
-        if (order?.delete) {
-          this.orders = this.orders.filter(x => x.id != order.id);
-        } else if (order?.update) {
-          const index = this.orders.findIndex(x => x.id == order.id);
-          this.orders[index] = order;
-        } else {
-          this.orders = this.orders.concat(order);
-        }
-      }
+      this.orders = order;
+      // if (order instanceof Array) {
+      //   this.orders = order;
+      // } else {
+      //   if (order?.delete) {
+      //     this.orders = this.orders.filter(x => x.id != order.id);
+      //   } else if (order?.update) {
+      //     const index = this.orders.findIndex(x => x.id == order.id);
+      //     this.orders[index] = order;
+      //   } else {
+      //     this.orders = this.orders.concat(order);
+      //   }
+      // }
     }, e => {
       console.log(e);
     });
@@ -54,7 +56,7 @@ export class AccountPage implements OnInit, OnDestroy {
     },1000);
   }
 
-  async onReorder(order) {
+  async onReorder(order: Order) {
     console.log(order);
     let data: any = await this.cartService.getCart();
     if (data?.value) {

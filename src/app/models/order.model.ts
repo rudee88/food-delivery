@@ -5,8 +5,6 @@ import { Restaurant } from "./restaurant.model";
 export class Order {
 
     constructor(
-        public id: string,
-        public user_id: string,
         public address: Address,
         public restaurant: Restaurant,
         public restaurant_id: string,
@@ -17,5 +15,8 @@ export class Order {
         public time: string,
         public status: string,
         public paid: string,
-    ) {}
+        public id?: string,
+        public user_id?: string,
+        public instruction?: string,
+        ) {}
 }

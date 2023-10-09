@@ -7,6 +7,7 @@ import { GlobalService } from '../global/global.service';
 import { Cart } from 'src/app/models/cart.model';
 import { Item } from 'src/app/models/item.model';
 import { Restaurant } from 'src/app/models/restaurant.model';
+import { Order } from 'src/app/models/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -68,18 +69,18 @@ export class CartService {
     );
   }
 
-   async orderToCart(order) {
-    // console.log('reorder:', order);
-    // const data = {
-    //   restaurant: order.restaurant,
-    //   items: order.order
-    // };
-    // this.model = data;
-    // await this.calculate();
-    // this.saveCart();
-    // console.log('model: ', this.model);
-    // this._cart.next(this.model);
-    // this.router.navigate(['/', 'tabs', 'restaurants', order.restaurant.uid]);
+   async orderToCart(order: Order) {
+    console.log('reorder:', order);
+    const data = {
+      restaurant: order.restaurant,
+      items: order.order
+    };
+    this.model = data;
+    await this.calculate();
+    this.saveCart();
+    console.log('model: ', this.model);
+    this._cart.next(this.model);
+    this.router.navigate(['/', 'tabs', 'restaurants', order.restaurant.uid]);
   }
 
   async quantityPlus(index, items?: Item[], restaurant?: Restaurant) {

@@ -9,6 +9,7 @@ import { GlobalService } from './../../../services/global/global.service';
 import { Subscription } from 'rxjs';
 import { Address } from 'src/app/models/address.model';
 import { Cart } from 'src/app/models/cart.model';
+import { Order } from 'src/app/models/order.model';
 
 @Component({
   selector: 'app-cart',
@@ -98,11 +99,12 @@ export class CartPage implements OnInit {
 
   async onMakePayment() {
     try {
-      const data = {
+      const data: Order = {
         restaurant_id: this.model.restaurant.uid,
         instruction: this.instruction ? this.instruction : '',
-        res: this.model.restaurant,
-        order: JSON.stringify(this.model.items),
+        restaurant: this.model.restaurant,
+        // order: JSON.stringify(this.model.items),
+        order: (this.model.items),
         time: moment().format('lll'),
         address: this.location,
         total: this.model.totalPrice,

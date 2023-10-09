@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { Restaurant } from 'src/app/models/restaurant.model';
+
 @Component({
   selector: 'app-restaurant-detail',
   templateUrl: './restaurant-detail.component.html',
@@ -7,8 +9,8 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class RestaurantDetailComponent  implements OnInit {
 
-  @Input() data: any;
-  @Input() isLoading: any;
+  @Input() data: Restaurant;
+  @Input() isLoading: boolean;
 
   constructor() { }
 
