@@ -1,0 +1,12 @@
+ion-item {
+    ion-button {
+        span {
+            color: var(--ion-color-primary);
+        }
+    }
+    ion-label {
+        span {
+            font-size: 0.8rem;
+        }
+    }
+}

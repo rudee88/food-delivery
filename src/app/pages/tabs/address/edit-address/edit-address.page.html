@@ -2,10 +2,37 @@
   <form [formGroup]="form">
     <ion-list>
       <ion-item lines="none">
+        <ion-icon name="location-outline" color="dark" slot="start"></ion-icon>
+        <ion-label>{{ location_name }}</ion-label>
         <ion-button slot="end" size="small" color="light">
-          CHANGE
+          <span>CHANGE</span>
         </ion-button>
       </ion-item>
+      <ion-row class="ion-padding-horizontal">
+        <ion-note class="ion-text-wrap ion-padding-horizontal">
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+        </ion-note>
+      </ion-row>
+      <ion-item-group class="ion-padding">
+        <ion-item>
+          <ion-label color="medium" position="floating">
+            <span>HOUSE / FLAT / BLOCK NO.</span>
+          </ion-label>
+          <ion-input type="text" autocomplete autocorrect formControlName="house"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="medium" position="floating">
+            <span>LANDMARK</span>
+          </ion-label>
+          <ion-input type="text" autocomplete autocorrect formControlName="landmark"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label color="medium" position="floating">
+            <span>SAVE AS</span>
+          </ion-label>
+          <ion-input type="text" autocomplete autocorrect formControlName="title"></ion-input>
+        </ion-item>
+      </ion-item-group>
     </ion-list>
   </form>
 </ion-content>
