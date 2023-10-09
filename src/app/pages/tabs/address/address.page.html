@@ -10,23 +10,34 @@
 </ion-header>
 
 <ion-content color="light">
-
   <div *ngIf="isLoading" class="ion-text-center align-spinner">
     <ion-spinner color="primary"></ion-spinner>
   </div>
 
-  <app-empty-screen *ngIf="!isLoading && addresses?.length === 0" [model]="model"></app-empty-screen>
-  
+  <app-empty-screen
+    *ngIf="!isLoading && addresses?.length === 0"
+    [model]="model"
+  ></app-empty-screen>
+
   <ion-list *ngIf="!isLoading && addresses?.length > 0">
     <ion-item-divider>SAVED ADDRESSES</ion-item-divider>
     <ion-item-group class="ion-padding">
-      <ion-item lines="full" class="ion-no-padding" *ngFor="let address of addresses">
-        <ion-icon [name]="onGetIcon(address?.title)" slot="start" color="medium"></ion-icon>
+      <ion-item
+        lines="full"
+        class="ion-no-padding"
+        *ngFor="let address of addresses"
+      >
+        <ion-icon
+          [name]="onGetIcon(address?.title)"
+          slot="start"
+          color="medium"
+        ></ion-icon>
         <ion-label>
           <ion-label class="ion-padding-bottom">{{ address?.title }}</ion-label>
           <ion-text color="medium" class="ion-text-justify">
             <p class="ion-text-wrap">
-              {{ address?.house }} {{ address?.landmark }} {{ address?.address }}
+              {{ address?.house }} {{ address?.landmark }} {{ address?.address
+              }}
             </p>
           </ion-text>
           <ion-row>
@@ -39,15 +50,19 @@
           </ion-row>
         </ion-label>
       </ion-item>
-  
     </ion-item-group>
   </ion-list>
-
 </ion-content>
 
 <ion-footer>
   <ion-toolbar color="light">
-    <ion-button color="success" expand="block" fill="outline" class="ion-padding-horizontal">
+    <ion-button
+      color="success"
+      expand="block"
+      fill="outline"
+      class="ion-padding-horizontal"
+      [routerLink]="['', 'tabs', 'address', 'edit-address']"
+    >
       ADD NEW ADDRESS
     </ion-button>
   </ion-toolbar>
