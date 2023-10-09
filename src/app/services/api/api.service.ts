@@ -4,6 +4,7 @@ import { Restaurant } from './../../models/restaurant.model';
 import { Address } from './../../models/address.model';
 import { Category } from 'src/app/models/category.model';
 import { Item } from 'src/app/models/item.model';
+import { Order } from 'src/app/models/order.model';
 
 @Injectable({
   providedIn: 'root',
@@ -219,7 +220,7 @@ export class ApiService {
     },
   ];
 
-  orders: any[] = [
+  orders: Order[] = [
     {
       address: {
         address: 'Indira Nagar Rd, Borsojai, Basistha 781029, India',
@@ -232,7 +233,7 @@ export class ApiService {
         user_id: '1',
       },
       deliveryCharge: 20,
-      grandTotal: '540.00',
+      grandTotal: 540.00,
       id: '5aG0RsPuze8NX00B7uRP',
       order: [
         {
@@ -267,7 +268,7 @@ export class ApiService {
       restaurant_id: '12wefdefsdss',
       status: 'created',
       time: 'Jul 6, 2020 11:44 AM',
-      total: '520.00',
+      total: 520.00,
       user_id: '1',
     },
     {
@@ -282,7 +283,7 @@ export class ApiService {
         user_id: '1',
       },
       deliveryCharge: 20,
-      grandTotal: '440.00',
+      grandTotal: 440.00,
       id: '5aG0RsPuze8NX00B7uR1',
       order: [
         {
@@ -340,7 +341,7 @@ export class ApiService {
       restaurant_id: '12wefdss',
       status: 'Delivered',
       time: 'Jul 7, 2020 11:44 AM',
-      total: '420.00',
+      total: 420.00,
       user_id: '1',
     },
   ];
