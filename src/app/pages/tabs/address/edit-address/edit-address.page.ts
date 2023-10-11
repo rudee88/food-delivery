@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class EditAddressPage implements OnInit {
   form: FormGroup
   location_name: string = 'Locating...';
+  isSubmitted = false;
 
   constructor() { }
 
@@ -22,6 +23,19 @@ export class EditAddressPage implements OnInit {
       house: new FormControl('', {validators: [Validators.required]}),
       landmark: new FormControl('', {validators: [Validators.required]}),
     })
+  }
+
+  toggleSubmit() {
+    this.isSubmitted = !this.isSubmitted;
+  }
+
+  onSubmit() {
+    this.toggleSubmit();
+    console.log(this.form);
+    if (!this.form) return;
+    setTimeout(() => {
+      this.toggleSubmit();
+    } ,2000);
   }
 
 }
