@@ -21,7 +21,7 @@ export class GoogleMapsService {
         '&libraries=places';
       script.async = true;
       script.defer = true;
-      document.appendChild(script);
+      document.body.appendChild(script);
       script.onload = () => {
         const loadedGoogleModule = win.google;
         if (loadedGoogleModule && loadedGoogleModule.maps) {

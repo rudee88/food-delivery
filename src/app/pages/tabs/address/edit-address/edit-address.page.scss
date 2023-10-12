@@ -1,3 +1,12 @@
+ion-toolbar {
+    --background: transparent;
+    --ion-color-base: transparent !important;
+}
+
+div {
+    height: 30vh;
+}
+
 ion-item {
     align-items: center;
     ion-button {
