@@ -1,25 +1,46 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
+import { LocationService } from 'src/app/services/location/location.service';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent  implements OnInit {
+export class MapComponent  implements OnInit, AfterViewInit {
   @ViewChild('map', {static: true}) mapElementRef: ElementRef;
   googleMaps: any;
   map; any;
   marker: any;
+  center = { lat: 3.1448499743415494, lng: 101.7689672668845};
 
   constructor(
     private maps: GoogleMapsService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private locationService: LocationService
     ) { }
 
   ngOnInit() {
-    this.loadMap();
+
+  }
+
+  ngAfterViewInit() {
+    this.initMap();
+  }
+
+  async initMap() {
+    try {
+      const position = await this.locationService.getCurrentLocation();
+      this.center = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+      this.loadMap();
+    } catch(e) {
+      console.log(e);
+      this.loadMap();
+    }
   }
 
   async loadMap() {
@@ -27,7 +48,7 @@ export class MapComponent  implements OnInit {
       let googleMaps: any = await this.maps.loadGoogleMaps();
       this.googleMaps = googleMaps;
       const mapEl = this.mapElementRef.nativeElement;
-      const location = new googleMaps.LatLng(3.1448499743415494, 101.7689672668845);
+      const location = new googleMaps.LatLng(this.center.lat, this.center.lng);
       this.map = new googleMaps.Map(mapEl, {
         center: location,
         zoom: 15,
