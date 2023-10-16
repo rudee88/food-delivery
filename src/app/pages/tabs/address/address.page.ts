@@ -4,6 +4,7 @@ import { Address } from './../../../models/address.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { AddressService } from './../../../services/address/address.service';
 import { Subscription } from 'rxjs';
+import { NavigationExtras, Router } from '@angular/router';
 
 @Component({
   selector: 'app-address',
@@ -19,7 +20,11 @@ export class AddressPage implements OnInit, OnDestroy {
     icon: 'location-outline'
   };
 
-  constructor(private globalService: GlobalService, private addressService: AddressService) {}
+  constructor(
+    private globalService: GlobalService, 
+    private addressService: AddressService,
+    private router: Router
+    ) {}
 
   ngOnInit() {
     this.addressesSub = this.addressService.addresses.subscribe(address => {
@@ -42,7 +47,15 @@ export class AddressPage implements OnInit, OnDestroy {
     return this.globalService.getIcon(title);
   }
 
-  onEditAddress(address) {}
+  onEditAddress(address) {
+    console.log(address);
+    const navData: NavigationExtras = {
+      queryParams: {
+        data: JSON.stringify(address)
+      }
+    }
+    this.router.navigate([this.router.url, 'edit-address'], navData);
+  }
 
   onDeleteAddress(address) {
     console.log('address: ', address);
