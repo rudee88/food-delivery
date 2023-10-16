@@ -7,21 +7,21 @@
   </ion-toolbar>
 
   <div>
-    <app-map></app-map>
+    <app-map (location)="fetchLocation($event)"></app-map>
   </div>
 
   <form [formGroup]="form">
     <ion-list>
       <ion-item lines="none">
         <ion-icon name="location-outline" color="dark" slot="start"></ion-icon>
-        <ion-label>{{ location_name }}</ion-label>
+        <ion-label>{{ location?.location_name }}</ion-label>
         <ion-button slot="end" size="small" color="light">
           <span>CHANGE</span>
         </ion-button>
       </ion-item>
-      <ion-row class="ion-padding-horizontal">
+      <ion-row class="ion-padding-horizontal ion-text-justify">
         <ion-note class="ion-text-wrap ion-padding-horizontal">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+          {{location?.address}}
         </ion-note>
       </ion-row>
       <ion-item-group class="ion-padding">

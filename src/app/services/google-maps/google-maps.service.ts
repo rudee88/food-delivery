@@ -1,11 +1,13 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GoogleMapsService {
-  constructor() {}
+  constructor(private http: HttpClient) {}
 
   loadGoogleMaps(): Promise<any> {
     const win = window as any;
@@ -29,7 +31,27 @@ export class GoogleMapsService {
         } else {
           reject('Google Map SDK is not Available');
         }
-      }
+      };
+    });
+  }
+
+  getAddress(lat: number, lng: number) {
+    return new Promise((resolve, reject) => {
+      this.http
+        .get<any>(
+          `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${environment.googleMapsApikey}`
+        )
+        .pipe(
+          map(geoData => {
+            if (!geoData || !geoData.results || geoData.results.length === 0) throw(null);
+            console.log('result: ', geoData.results[0]);
+            return geoData.results[0];
+          })
+        ).subscribe(data => {
+          resolve(data);
+        }, e => {
+          reject(e);
+        });
     });
   }
 }
