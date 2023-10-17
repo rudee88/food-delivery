@@ -78,6 +78,10 @@ export class EditAddressPage implements OnInit {
         landmark: address.landmark,
       };
     }
+    this.formData(data);
+  }
+
+  formData(data?) {
     this.form = new FormGroup({
       title: new FormControl(data.title, { validators: [Validators.required] }),
       house: new FormControl(data.house, { validators: [Validators.required] }),
