@@ -1,4 +1,14 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, Renderer2, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Renderer2,
+  ViewChild,
+} from '@angular/core';
 
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 import { LocationService } from 'src/app/services/location/location.service';
@@ -8,23 +18,23 @@ import { LocationService } from 'src/app/services/location/location.service';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent  implements OnInit, AfterViewInit {
-  @ViewChild('map', {static: true}) mapElementRef: ElementRef;
+export class MapComponent implements OnInit, AfterViewInit {
+  @ViewChild('map', { static: true }) mapElementRef: ElementRef;
   googleMaps: any;
-  map; any;
+  map;
+  any;
   marker: any;
-  center = { lat: 3.1448499743415494, lng: 101.7689672668845};
+  @Input() update = false;
+  @Input() center = { lat: 3.1448499743415494, lng: 101.7689672668845 };
   @Output() location: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private maps: GoogleMapsService,
     private renderer: Renderer2,
     private locationService: LocationService
-    ) { }
+  ) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     this.initMap();
@@ -32,17 +42,20 @@ export class MapComponent  implements OnInit, AfterViewInit {
 
   async initMap() {
     try {
-      const position = await this.locationService.getCurrentLocation();
-      this.center = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-      await this.loadMap();
-      this.getAddress(this.center.lat, this.center.lng);
-    } catch(e) {
+      if (!this.update) {
+        const position = await this.locationService.getCurrentLocation();
+        this.center = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        };
+        await this.loadMap();
+        this.getAddress(this.center.lat, this.center.lng);
+      } else {
+        await this.loadMap();
+      }
+    } catch (e) {
       console.log(e);
       this.loadMap();
-      
     }
   }
 
@@ -61,24 +74,22 @@ export class MapComponent  implements OnInit, AfterViewInit {
         overviewMapControl: false,
         mapTypeControl: false,
         mapTtypeControlOptions: {
-          mapTypeId: [googleMaps.MapTypeId.RoadMap, 'RSP Food Delivery']
-        }
+          mapTypeId: [googleMaps.MapTypeId.RoadMap, 'RSP Food Delivery'],
+        },
       });
       const style = [
         {
           featureType: 'all',
           elementType: 'all',
-          stylers: [
-            {saturation: -100}
-          ]
-        }
+          stylers: [{ saturation: -100 }],
+        },
       ];
-      var mapType = new googleMaps.StyledMapType(style, {name: 'Grayscale'});
+      var mapType = new googleMaps.StyledMapType(style, { name: 'Grayscale' });
       this.map.mapTypes.set('RSP Food Delivery', mapType);
       this.map.setMapTypeId('RSP Food Delivery');
       this.renderer.addClass(mapEl, 'visible');
       this.addMaker(location);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }
@@ -88,17 +99,17 @@ export class MapComponent  implements OnInit, AfterViewInit {
     const icon = {
       url: 'assets/icon/location-pin.png',
       scaledSize: new googleMaps.Size(50, 50),
-    }
+    };
     this.marker = new googleMaps.Marker({
       position: location,
       map: this.map,
       icon: icon,
       draggable: true,
-      animation: googleMaps.Animation.DROP
+      animation: googleMaps.Animation.DROP,
     });
     this.googleMaps.event.addListener(this.marker, 'dragend', () => {
       this.getAddress(this.marker.position.lat(), this.marker.position.lng());
-    })
+    });
   }
 
   async getAddress(lat, lng) {
@@ -106,16 +117,21 @@ export class MapComponent  implements OnInit, AfterViewInit {
       const result: any = await this.maps.getAddress(lat, lng);
       console.log(result);
       const loc = {
-        location_name: result && result.address_component && result.address_component[0] ? result.address_component[0].short_name : 'Unknown',
-        address: result && result.formatted_address ? result.formatted_address : 'Unknown Address',
+        location_name:
+          result && result.address_component && result.address_component[0]
+            ? result.address_component[0].short_name
+            : 'Unknown',
+        address:
+          result && result.formatted_address
+            ? result.formatted_address
+            : 'Unknown Address',
         lat,
-        lng
+        lng,
       };
       console.log(loc);
       this.location.emit(loc);
-    } catch(e) {
+    } catch (e) {
       console.log(e);
     }
   }
-
 }

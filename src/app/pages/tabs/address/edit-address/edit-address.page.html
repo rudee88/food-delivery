@@ -6,11 +6,15 @@
     </ion-buttons>
   </ion-toolbar>
 
-  <div>
-    <app-map (location)="fetchLocation($event)"></app-map>
+  <div *ngIf="isLoading" class="ion-text-center align-spinner">
+    <ion-spinner color="primary"></ion-spinner>
   </div>
 
-  <form [formGroup]="form">
+  <div class="map">
+    <app-map [center]="center" [update]="update" (location)="onFetchLocation($event)"></app-map>
+  </div>
+
+  <form [formGroup]="form" *ngIf="!isLoading">
     <ion-list>
       <ion-item lines="none">
         <ion-icon name="location-outline" color="dark" slot="start"></ion-icon>

@@ -50,7 +50,16 @@ export class AddressService {
     param.id = id;
     let currentAddresses = this._addresses.value;
     const index = currentAddresses.findIndex(x => x.id == id);
-    currentAddresses[index] = param;
+    currentAddresses[index] = new Address(
+      id,
+      param.user_id,
+      param.title,
+      param.address,
+      param.landmark,
+      param.house,
+      param.lat,
+      param.lng
+    );
     this._addresses.next(currentAddresses);
   }
 
