@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
+import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
 
 import { AddressService } from 'src/app/services/address/address.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -104,6 +105,19 @@ export class EditAddressPage implements OnInit {
 
   toggleSubmit() {
     this.isSubmitted = !this.isSubmitted;
+  }
+
+  async onSearchLocation() {
+    try {
+      const options = {
+        component: SearchLocationComponent,
+        swipeToClose: true,
+      };
+      const location = await this.globalService.createModal(options);
+      console.log('location: ', location);
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   async onSubmit() {
