@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { GlobalService } from 'src/app/services/global/global.service';
+
 @Component({
   selector: 'app-search-location',
   templateUrl: './search-location.component.html',
@@ -7,8 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SearchLocationComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private globalService: GlobalService) { }
 
   ngOnInit() {}
+
+  onSearchChange(event) {
+    console.log(event);
+  }
+
+  onDismiss(val?) {
+    this.globalService.modalDismiss(val);
+  }
 
 }

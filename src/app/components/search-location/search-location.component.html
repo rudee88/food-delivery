@@ -1,3 +1,16 @@
-<p>
-  search-location works!
-</p>
+<ion-header class="ion-no-border">
+  <ion-toolbar color="light">
+    <ion-searchbar
+      animated="true"
+      debounce="800"
+      #searchInput
+      placeholder="Search for area, street..."
+      (ionChange)="onSearchChange($event)"
+    ></ion-searchbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="onDismiss()" color="dark" fill="clear">
+        Cancel
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
