@@ -10,9 +10,14 @@ import { environment } from 'src/environments/environment';
 export class GoogleMapsService {
   googleMaps: any;
   private _places = new BehaviorSubject<SearchPlace[]>([]);
+  private _markerChange = new BehaviorSubject<any>({});
 
   get places() {
     return this._places.asObservable();
+  }
+
+  get markerChange() {
+    return this._markerChange.asObservable();
   }
  
   constructor(
@@ -116,6 +121,10 @@ export class GoogleMapsService {
         resolve(latlng);
       });
     });
+  }
+
+  changeMarkerInMap(location) {
+    this._markerChange.next(location);
   }
 
 }

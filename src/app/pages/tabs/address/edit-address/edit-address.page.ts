@@ -3,9 +3,11 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
+import { SearchPlace } from 'src/app/models/search-place.model';
 
 import { AddressService } from 'src/app/services/address/address.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 
 @Component({
   selector: 'app-edit-address',
@@ -15,7 +17,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 export class EditAddressPage implements OnInit {
   form: FormGroup;
   isSubmitted = false;
-  location: any = {};
+  location = {} as SearchPlace;
   isLocationFetched: boolean;
   center: any;
   update: boolean;
@@ -26,7 +28,8 @@ export class EditAddressPage implements OnInit {
     private addressService: AddressService,
     private globalService: GlobalService,
     private navCtrl: NavController,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private googleMapsService: GoogleMapsService
   ) {}
 
   ngOnInit() {
@@ -116,6 +119,16 @@ export class EditAddressPage implements OnInit {
       };
       const location = await this.globalService.createModal(options);
       console.log('location: ', location);
+      if (location) {
+        this.location = location;
+        const loc = {
+          lat: location.lat,
+          lng: location.lng
+        }
+        // update marker
+        this.update = true;
+        this.googleMapsService.changeMarkerInMap(loc);
+      }
     } catch(e) {
       console.log(e);
     }
