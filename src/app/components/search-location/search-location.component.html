@@ -30,11 +30,11 @@
       <h5>SEARCH RESULTS</h5>
     </ion-list-header>
   </ion-list>
-    <ion-item>
-      <ion-icon slot="start" name="locate-outline"></ion-icon>
+    <ion-item *ngFor="let place of places" (click)="onChoosePlace(place)">
+      <ion-icon slot="start" name="location-outline"></ion-icon>
       <ion-label>
-        Selangor
-        <p>Ampang</p>
+        {{place?.location_name}}
+        <p>{{place?.address}}</p>
       </ion-label>
     </ion-item>
 

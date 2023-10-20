@@ -86,7 +86,7 @@ export class GoogleMapsService {
             predictions.forEach(async (prediction) => {
               console.log('prediction: ', prediction);
               const latLng: any = await this.geoCode(prediction.description, googleMaps);
-              const places: any = {
+              const places: SearchPlace = {
                 location_name: prediction.structured_formatting.main_text,
                 address: prediction.description,
                 lat: latLng.lat,
