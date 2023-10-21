@@ -40,7 +40,8 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {}
 
-  ngAfterViewInit() {
+  async ngAfterViewInit() {
+    await this.initMap();
     this.mapChange = this.maps.markerChange.subscribe(async (loc) => {
       if (loc?.lat) {
         const googleMaps = this.googleMaps;
@@ -50,7 +51,6 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
         await this.addMaker(location);
       }
     });
-    this.initMap();
   }
 
   async initMap() {
