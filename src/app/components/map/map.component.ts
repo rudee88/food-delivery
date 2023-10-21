@@ -10,6 +10,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 import { LocationService } from 'src/app/services/location/location.service';
@@ -29,6 +30,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() center = { lat: 3.1448499743415494, lng: 101.7689672668845 };
   @Output() location: EventEmitter<any> = new EventEmitter();
   mapListener: any;
+  mapChange: Subscription
 
   constructor(
     private maps: GoogleMapsService,
@@ -39,7 +41,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {}
 
   ngAfterViewInit() {
-    this.maps.markerChange.subscribe(async (loc) => {
+    this.mapChange = this.maps.markerChange.subscribe(async (loc) => {
       if (loc?.lat) {
         const googleMaps = this.googleMaps;
         const location = new googleMaps.LatLng(loc.lat, loc.lng);
@@ -147,6 +149,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-      if (!this.mapListener) this.googleMaps.event.removeListener(this.mapListener);
+      if (this.mapListener) this.googleMaps.event.removeListener(this.mapListener);
+      if (this.mapChange) this.mapChange.unsubscribe();
   }
 }

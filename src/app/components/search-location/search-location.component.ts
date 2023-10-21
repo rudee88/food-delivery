@@ -4,6 +4,12 @@ import { SearchPlace } from 'src/app/models/search-place.model';
 
 import { GlobalService } from 'src/app/services/global/global.service';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
+import { LocationService } from 'src/app/services/location/location.service';
+
+interface GoogleMapResponse {
+  address_components: any[];
+  formatted_address: string;
+}
 
 @Component({
   selector: 'app-search-location',
@@ -17,7 +23,8 @@ export class SearchLocationComponent  implements OnInit, OnDestroy {
 
   constructor(
     private globalService: GlobalService,
-    private googleMapService: GoogleMapsService
+    private googleMapService: GoogleMapsService,
+    private locationService: LocationService
     ) { }
 
   ngOnInit() {
@@ -36,6 +43,28 @@ export class SearchLocationComponent  implements OnInit, OnDestroy {
 
   onDismiss(val?) {
     this.globalService.modalDismiss(val);
+  }
+
+  async onGetCurrentPosition() {
+    try {
+      this.globalService.showLoader();
+      const position = await this.locationService.getCurrentLocation();
+      const {latitude, longitude} = position.coords;
+      const result: GoogleMapResponse = await this.googleMapService.getAddress(latitude, longitude) as GoogleMapResponse;
+      console.log('result: ', result);
+      const place: SearchPlace = {
+        location_name: result.address_components[0].short_name,
+        address: result.formatted_address,
+        lat: latitude,
+        lng: longitude
+      };
+      this.globalService.hideLoader();
+      this.onDismiss(place);
+    } catch(e) {
+      console.log(e)
+      this.globalService.hideLoader();
+      this.globalService.errorToast('Check wether GPS is enabled & the App has its permissions', 5000);
+    }
   }
 
   onChoosePlace(place) {
