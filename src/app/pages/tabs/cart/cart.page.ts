@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, NavController } from '@ionic/angular';
 import * as moment from 'moment';
@@ -10,13 +10,14 @@ import { Subscription } from 'rxjs';
 import { Address } from 'src/app/models/address.model';
 import { Cart } from 'src/app/models/cart.model';
 import { Order } from 'src/app/models/order.model';
+import { AddressService } from 'src/app/services/address/address.service';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.page.html',
   styleUrls: ['./cart.page.scss'],
 })
-export class CartPage implements OnInit {
+export class CartPage implements OnInit, OnDestroy {
 
   @ViewChild(IonContent, {static: false}) content: IonContent;
   urlCheck: any;
@@ -26,6 +27,7 @@ export class CartPage implements OnInit {
   instruction: any;
   location = {} as Address;
   cartSub: Subscription;
+  addressSub: Subscription;
 
   constructor(
     private router: Router, 
@@ -33,9 +35,13 @@ export class CartPage implements OnInit {
     private navCtrl: NavController,
     private globalService: GlobalService,
     private cartService: CartService,
+    private addressService: AddressService
     ) { }
 
   ngOnInit() {
+    this.addressSub = this.addressService.addressChange.subscribe(address => {
+      this.location = address;
+    });
     this.cartSub = this.cartService.cart.subscribe(cart => {
       console.log('cart page: ', cart);
       this.model = cart;
@@ -48,21 +54,6 @@ export class CartPage implements OnInit {
 
   async getData() {
     await this.checkUrl;
-    // this.location = {
-    //   lat: 3.143043190411341, 
-    //   lng: 101.76289370565321,
-    //   address: 'Ampang, Selangor'
-    // }
-    this.location = new Address(
-      'address1',
-      'user1',
-      'Address 1',
-      'Bandar Baru Ampang',
-      'Jalan Wawasan 2/4',
-      '30A',
-      101.76289370565321,
-      101.76289370565321
-    );
     await this.cartService.getCartData();
   }
 
@@ -90,7 +81,13 @@ export class CartPage implements OnInit {
   }
 
   onAddAddress() {
-
+    let url: any;
+    if (this.urlCheck == 'tabs') {
+      url = ['/', 'tabs', 'address', 'edit-address'];
+    } else {
+      url = [this.router.url, 'address', 'edit-address'];
+    }
+    this.router.navigate(url);
   }
 
   onChangeAddress() {
@@ -134,6 +131,12 @@ export class CartPage implements OnInit {
     if (this.model?.items && this.model.items.length > 0) {
       this.cartService.saveCart();
     }
+  }
+
+  ngOnDestroy(): void {
+      console.log('Destroy CartPage');
+      if (this.addressSub) this.addressSub.unsubscribe();
+      if (this.cartSub) this.cartSub.unsubscribe();
   }
 
 }
