@@ -1,6 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Address } from 'src/app/models/address.model';
 import { SearchPlace } from 'src/app/models/search-place.model';
+import { AddressService } from 'src/app/services/address/address.service';
 
 import { GlobalService } from 'src/app/services/global/global.service';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
@@ -20,17 +22,35 @@ export class SearchLocationComponent  implements OnInit, OnDestroy {
   query: string;
   places: SearchPlace[] = [];
   placeSub: Subscription;
+  @Input() from;
+  savedPlaces: Address[] = [];
+  addressessSub: Subscription;
 
   constructor(
     private globalService: GlobalService,
     private googleMapService: GoogleMapsService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private addressesService: AddressService
     ) { }
 
   ngOnInit() {
     this.placeSub = this.googleMapService.places.subscribe(places => {
       this.places = places;
     });
+    if (this.from) this.getSavedPlaces();
+  }
+
+  async getSavedPlaces() {
+    this.globalService.showLoader();
+    this.addressessSub = this.addressesService.addresses.subscribe(addresses => {
+      this.savedPlaces = addresses;
+    });
+    await this.addressesService.getAddresses();
+    this.globalService.hideLoader();
+  }
+
+  onSelectSavedPlace(place) {
+    this.onDismiss(place);
   }
 
   async onSearchChange(event) {
@@ -74,6 +94,7 @@ export class SearchLocationComponent  implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
       if (this.placeSub) this.placeSub.unsubscribe();
+      if (this.addressessSub) this.addressessSub.unsubscribe();
   }
 
 }

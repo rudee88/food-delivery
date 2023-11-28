@@ -12,7 +12,7 @@ import { SearchLocationComponent } from './search-location/search-location.compo
     RestaurantComponent,
     LoadingRestaurantComponent,
     EmptyScreenComponent,
-  SearchLocationComponent
+   SearchLocationComponent
   ],
   imports: [IonicModule, CommonModule],
   exports: [

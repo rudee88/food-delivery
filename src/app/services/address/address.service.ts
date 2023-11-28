@@ -68,10 +68,14 @@ export class AddressService {
     this._addresses.next(currentAddresses);
   }
 
-  async deleteAddress(param) {
+  deleteAddress(param) {
     let currentAddress = this._addresses.value;
     currentAddress = currentAddress.filter(x => x.id != param.id);
     this._addresses.next(currentAddress);
+  }
+
+  changeAddress(address) {
+    this._addressChange.next(address);
   }
 
 }

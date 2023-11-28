@@ -11,6 +11,7 @@ import { Address } from 'src/app/models/address.model';
 import { Cart } from 'src/app/models/cart.model';
 import { Order } from 'src/app/models/order.model';
 import { AddressService } from 'src/app/services/address/address.service';
+import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
 
 @Component({
   selector: 'app-cart',
@@ -40,6 +41,7 @@ export class CartPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.addressSub = this.addressService.addressChange.subscribe(address => {
+      console.log('new address: ', address);
       this.location = address;
     });
     this.cartSub = this.cartService.cart.subscribe(cart => {
@@ -48,7 +50,6 @@ export class CartPage implements OnInit, OnDestroy {
       if (!this.model) this.location = {} as Address;
       console.log('cart page model: ', this.model);
     });
-    this.checkUrl();
     this.getData();
   }
 
@@ -90,8 +91,25 @@ export class CartPage implements OnInit, OnDestroy {
     this.router.navigate(url);
   }
 
-  onChangeAddress() {
-    
+
+  async onChangeAddress() {
+    try {
+      const options = {
+        component: SearchLocationComponent,
+        swipteToClose: true,
+        cssClass: 'custom-modal',
+        componentProps: {
+          from: 'cart'
+        }
+      }
+      const address = await this.globalService.createModal(options);
+      if (address) {
+        if (address === 'add') return this.onAddAddress();
+        await this.addressService.changeAddress(address);
+      }
+    } catch(e) {
+      console.log(e);
+    }
   }
 
   async onMakePayment() {

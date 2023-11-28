@@ -1,13 +1,21 @@
 <ion-header class="ion-no-border">
   <ion-toolbar color="light">
+
+    <ion-title>
+      <ion-label mode="md">
+        Choose a delivery address
+      </ion-label>
+    </ion-title>
+
     <ion-searchbar
+      *ngIf="!from"
       animated="true"
       debounce="800"
       #searchInput
       placeholder="Search for area, street..."
       (ionChange)="onSearchChange($event)"
     ></ion-searchbar>
-    <ion-buttons slot="end">
+    <ion-buttons slot="end" *ngIf="!from">
       <ion-button (click)="onDismiss()" color="dark" fill="clear">
         Cancel
       </ion-button>
@@ -17,7 +25,7 @@
 
 <ion-content class="ion-padding">
 
-  <ion-item (click)="onGetCurrentPosition()">
+  <ion-item (click)="onGetCurrentPosition()" *ngIf="!from || from !== 'cart'">
     <ion-icon name="locate-outline" slot="start"></ion-icon>
     <ion-label>
       Current Location
@@ -25,11 +33,29 @@
     </ion-label>
   </ion-item>
 
-  <ion-list *ngIf="places?.length > 0">
+  <ion-list *ngIf="from">
     <ion-list-header>
-      <h5>SEARCH RESULTS</h5>
+      <h5>SAVED ADDRESSES</h5>
     </ion-list-header>
   </ion-list>
+
+  <ion-list *ngIf="from">
+    <ion-item *ngFor="let savedPlace of savedPlaces" (click)="onSelectSavedPlace(savedPlace)">
+      <ion-icon name="location-outline" slot="start"></ion-icon>
+      <ion-label>
+        {{savedPlace?.title}}
+        <p>{{savedPlace?.address}}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item lines="none" *ngIf="from === 'cart'" (click)="onDismiss('add')">
+      <ion-icon name="add" slot="start" color="primary"></ion-icon>
+      <ion-text color="primary">
+        <h5>ADD NEW ADDRESS</h5>
+      </ion-text>
+    </ion-item>
+  </ion-list>
+
     <ion-item *ngFor="let place of places" (click)="onChoosePlace(place)">
       <ion-icon slot="start" name="location-outline"></ion-icon>
       <ion-label>
