@@ -21,10 +21,20 @@ export class AddressService {
 
   constructor(private api: ApiService) { }
 
-  getAddresses() {
+  getAddresses(limit?) {
     try {
       //user id
       let allAddress: Address[] = this.api.addresses;
+      console.log(allAddress);
+      if (limit) {
+        let address: Address[] = [];
+        let length = limit;
+        if (allAddress.length < limit) length = allAddress.length;
+        for (let i = 0; i < length; i++) {
+          address.push(allAddress[i]);
+        }
+        allAddress = address;
+      }
       this._addresses.next(allAddress);
     } catch(e) {
       console.log(e);

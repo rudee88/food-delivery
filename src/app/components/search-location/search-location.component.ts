@@ -45,7 +45,8 @@ export class SearchLocationComponent  implements OnInit, OnDestroy {
     this.addressessSub = this.addressesService.addresses.subscribe(addresses => {
       this.savedPlaces = addresses;
     });
-    await this.addressesService.getAddresses();
+    if (this.from === 'home') await this.addressesService.getAddresses(2);
+    else await this.addressesService.getAddresses();
     this.globalService.hideLoader();
   }
 

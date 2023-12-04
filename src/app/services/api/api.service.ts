@@ -218,6 +218,16 @@ export class ApiService {
       title: 'Work',
       user_id: '1',
     },
+    {
+      address: 'Ampang, Selangor',
+      house: 'Ground Floor',
+      id: '8Kox63KlggTvV7ebRK1r',
+      landmark: '30A, Jalan 2/4',
+      lat: 3.1448499743415494, 
+      lng: 101.7689672668845,
+      title: 'Ampang',
+      user_id: '1',
+    },
   ];
 
   orders: Order[] = [
