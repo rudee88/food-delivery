@@ -8,7 +8,7 @@
     </ion-title>
 
     <ion-buttons slot="start" *ngIf="from && from === 'select-place'">
-      <ion-button fill="clear">
+      <ion-button fill="clear" (click)="onDismiss()">
         <ion-icon name="arrow-back-outline" slot="icon-only" (click)="onDismiss()"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -82,14 +82,14 @@
     </ion-item>
   </ion-list>
 
-  <ion-list>
-    <ion-list-header *ngIf="places?.length > 0">
-      <h5>Search Result</h5>
+  <ion-list *ngIf="places?.length > 0 && query?.length > 0">
+    <ion-list-header>
+      <h5>SEARCH RESULTS</h5>
     </ion-list-header>
      <ion-item *ngFor="let place of places" (click)="onChoosePlace(place)">
       <ion-icon slot="start" name="location-outline"></ion-icon>
       <ion-label>
-        {{place?.location_name}}
+        {{place?.title}}
         <p>{{place?.address}}</p>
       </ion-label>
     </ion-item>

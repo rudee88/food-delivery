@@ -38,7 +38,7 @@ export class EditAddressPage implements OnInit {
 
   checkForUpdate() {
     this.isLoading = true;
-    this.location.location_name = 'Locating...';
+    this.location.title = 'Locating...';
     this.isLocationFetched = false;
     this.route.queryParamMap.subscribe(async (paramMap) => {
       console.log('data: ', paramMap);
@@ -55,7 +55,7 @@ export class EditAddressPage implements OnInit {
           this.location.lat = this.center.lat;
           this.location.lng = this.center.lng;
           this.location.address = address.address;
-          this.location.location_name = address.title;
+          this.location.title = address.title;
           this.id = address.id;
           this.toggleFetched();
         }

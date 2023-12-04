@@ -130,7 +130,7 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       const result: any = await this.maps.getAddress(lat, lng);
       console.log(result);
       const loc = {
-        location_name:
+        title:
           result && result.address_component && result.address_component[0]
             ? result.address_component[0].short_name
             : 'Unknown',

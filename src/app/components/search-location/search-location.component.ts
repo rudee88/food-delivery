@@ -74,7 +74,7 @@ export class SearchLocationComponent  implements OnInit, OnDestroy {
       const result: GoogleMapResponse = await this.googleMapService.getAddress(latitude, longitude) as GoogleMapResponse;
       console.log('result: ', result);
       const place: SearchPlace = {
-        location_name: result.address_components[0].short_name,
+        title: result.address_components[0].short_name,
         address: result.formatted_address,
         lat: latitude,
         lng: longitude
@@ -89,7 +89,13 @@ export class SearchLocationComponent  implements OnInit, OnDestroy {
   }
 
   onChoosePlace(place) {
+    
     console.log('Choose Place: ', place);
+    if (this.from) {
+      const savedPlaced = this.savedPlaces.find(x => x.lat === place.lat && x.lng === place.lng);
+      if (savedPlaced?.lat) place = savedPlaced;
+    }
+   
     this.onDismiss(place);
   }
 

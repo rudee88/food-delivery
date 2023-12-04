@@ -36,6 +36,7 @@ export class HomePage implements OnInit {
           this.location = address;
           this.nearbyApiCall(address.lat, address.lng);
         }
+        this.isLoading = false;
       },
       (e) => {
         console.log(e);
