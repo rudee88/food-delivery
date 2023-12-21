@@ -5,9 +5,9 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { AccountPageRoutingModule } from './account-routing.module';
-
 import { AccountPage } from './account.page';
 import { OrdersComponent } from 'src/app/components/orders/orders.component';
+import { EditProfileComponent } from 'src/app/components/edit-profile/edit-profile.component';
 
 @NgModule({
   imports: [
@@ -16,6 +16,7 @@ import { OrdersComponent } from 'src/app/components/orders/orders.component';
     IonicModule,
     AccountPageRoutingModule
   ],
-  declarations: [AccountPage, OrdersComponent]
+  declarations: [AccountPage, OrdersComponent, EditProfileComponent]
 })
 export class AccountPageModule {}
+

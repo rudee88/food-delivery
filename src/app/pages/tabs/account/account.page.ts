@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import { OrderService } from 'src/app/services/order/order.service';
 import { CartService } from '../../../services/cart/cart.service';
 import { Order } from 'src/app/models/order.model';
+import { GlobalService } from 'src/app/services/global/global.service';
+import { EditProfileComponent } from 'src/app/components/edit-profile/edit-profile.component';
 
 @Component({
   selector: 'app-account',
@@ -17,7 +20,8 @@ export class AccountPage implements OnInit, OnDestroy {
 
   constructor(
     private orderService: OrderService,
-    private cartService: CartService
+    private cartService: CartService,
+    private globalService: GlobalService
     ) {}
 
   ngOnInit() {
@@ -64,6 +68,18 @@ export class AccountPage implements OnInit, OnDestroy {
     } else {
       this.cartService.orderToCart(order)
     }
+  }
+
+  async onEditProfile() {
+    const options = {
+      component: EditProfileComponent,
+      componentProps: {
+        profile: this.profile,
+      },
+      cssClass: 'custom-modal',
+      swipeToClose: true,
+    };
+    const modal = await this.globalService.createModal(options);
   }
 
   onGetHelp(order) {
