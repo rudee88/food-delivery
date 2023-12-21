@@ -74,7 +74,7 @@
       </ion-text>
     </ion-item>
 
-    <ion-item lines="none" *ngIf="from === 'cart'" (click)="onDismiss('add')">
+    <ion-item lines="none" *ngIf="from === 'cart' || from === 'select-place'" (click)="onDismiss('add')">
       <ion-icon name="add" slot="start" color="primary"></ion-icon>
       <ion-text color="primary">
         <h5>ADD NEW ADDRESS</h5>

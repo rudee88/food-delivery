@@ -68,7 +68,10 @@ export class MapComponent implements OnInit, AfterViewInit, OnDestroy {
       }
     } catch (e) {
       console.log(e);
+      this.center = { lat: 3.1448499743415494, lng: 101.7689672668845 }
+      console.log('center', this.center);
       this.loadMap();
+      this.getAddress(this.center.lat, this.center.lng);
     }
   }
 

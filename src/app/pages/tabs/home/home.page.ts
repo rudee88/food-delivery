@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
 import { Address } from 'src/app/models/address.model';
@@ -14,7 +15,7 @@ import { LocationService } from 'src/app/services/location/location.service';
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-export class HomePage implements OnInit {
+export class HomePage implements OnInit, OnDestroy {
   banners: any[] = [];
   restaurants: Restaurant[] = [];
   isLoading: boolean = false;
@@ -25,16 +26,23 @@ export class HomePage implements OnInit {
     private api: ApiService,
     private addressService: AddressService,
     private globalService: GlobalService,
-    private locationService: LocationService
+    private locationService: LocationService,
+    private router: Router
   ) {}
 
   ngOnInit() {
+    console.log('ngOnInit');
     this.addressSub = this.addressService.addressChange.subscribe(
       (address) => {
+        console.log('address: ', address);
         if (address && address?.lat) {
           if (!this.isLoading) this.isLoading = true;
           this.location = address;
           this.nearbyApiCall(address.lat, address.lng);
+        } else {
+          if (address && (!this.location || !this.location?.lat)) {
+            this.searchLocation('home', 'home-modal');
+          }
         }
         this.isLoading = false;
       },
@@ -48,6 +56,18 @@ export class HomePage implements OnInit {
     if (!this.location?.lat) {
       this.getNearbyRestaurants();
     }
+  }
+
+  ionViewWillEnter() {
+    console.log('ionWillEnter');
+  }
+
+  ionViewDidEnter() {
+    console.log('ionViewDidEnter');
+  }
+
+  ngAfterViewInit() {
+    console.log('ngAfterViewInit');
   }
 
   getBanners() {
@@ -94,7 +114,9 @@ export class HomePage implements OnInit {
       }
       const modal = await this.globalService.createModal(options);
       if (modal) {
-        if (modal === 'select') {
+        if (modal === 'add') {
+          this.addAddress(this.location);
+        }else if (modal === 'select') {
           this.searchLocation('select-place');
         } else {
           this.location = modal;
@@ -105,4 +127,26 @@ export class HomePage implements OnInit {
       console.log(e);
     }
   }
+
+  addAddress(val?) {
+    let navData: NavigationExtras;
+    if (val) {
+      val.from = 'home';
+    } else {
+      val = {
+        from: 'home'
+      };
+    }
+    navData = {
+      queryParams: {
+        data: JSON.stringify(val)
+      }
+    };
+    this.router.navigate(['/', 'tabs', 'address', 'edit-address']);
+  }
+
+  ngOnDestroy() {
+    if (this.addressSub) this.addressSub.unsubscribe();
+  }
+
 }

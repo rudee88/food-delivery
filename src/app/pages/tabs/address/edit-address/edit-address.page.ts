@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
 import { SearchPlace } from 'src/app/models/search-place.model';
@@ -23,13 +23,16 @@ export class EditAddressPage implements OnInit {
   update: boolean;
   id: any;
   isLoading: boolean = false;
+  from: string;
+  check: boolean = false;
 
   constructor(
     private addressService: AddressService,
     private globalService: GlobalService,
     private navCtrl: NavController,
     private route: ActivatedRoute,
-    private googleMapsService: GoogleMapsService
+    private googleMapsService: GoogleMapsService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -47,16 +50,20 @@ export class EditAddressPage implements OnInit {
         const data = JSON.parse(dataParam);
         if (data) {
           const address = data;
-          this.center = {
-            lat: address.lat,
-            lng: address.lng,
-          };
-          this.update = true;
-          this.location.lat = this.center.lat;
-          this.location.lng = this.center.lng;
-          this.location.address = address.address;
-          this.location.title = address.title;
-          this.id = address.id;
+          if (address?.lat) {
+            this.center = {
+              lat: address.lat,
+              lng: address.lng,
+            };
+            this.update = true;
+            this.location.lat = this.center.lat;
+            this.location.lng = this.center.lng;
+            this.location.address = address.address;
+            this.location.title = address.title;
+            if (!address?.from) this.id = address.id;
+          }
+          if (address?.from) this.from = address.from;
+          await this.initForm(address);
           this.toggleFetched();
         }
       } else {
@@ -150,6 +157,7 @@ export class EditAddressPage implements OnInit {
       console.log('address: ', data);
       if (!this.id) await this.addressService.addAddress(data);
       else await this.addressService.updateAddress(this.id, data);
+      this.check = true;
       this.navCtrl.back();
       this.toggleSubmit();
     } catch (e) {
@@ -157,4 +165,12 @@ export class EditAddressPage implements OnInit {
       this.globalService.errorToast();
     }
   }
+
+  ionViewDidLeave() {
+    console.log('ionViewDidLeave EditAdressPage');
+    if (this.from === 'home' && !this.check) {
+      this.addressService.changeAddress({});
+    }
+  }
+
 }
