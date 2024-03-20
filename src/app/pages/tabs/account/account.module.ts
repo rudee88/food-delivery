@@ -16,7 +16,7 @@ import { EditProfileComponent } from 'src/app/components/edit-profile/edit-profi
     IonicModule,
     AccountPageRoutingModule
   ],
-  declarations: [AccountPage, OrdersComponent, EditProfileComponent]
+  declarations: [AccountPage, OrdersComponent, EditProfileComponent],
 })
 export class AccountPageModule {}
 

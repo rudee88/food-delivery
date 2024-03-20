@@ -27,6 +27,8 @@ export class ApiService {
       delivery_time: 25,
       distance: 2.5,
       price: 100,
+      latitude: 3.1448499743415494,
+      longitude: 101.7689672668845
     },
     {
       uid: '12wefdefsdss',
@@ -62,6 +64,8 @@ export class ApiService {
       rating: 5,
       delivery_time: 25,
       price: 100,
+      latitude: 3.1448499743415494,
+      longitude: 101.7689672668845
     },
     {
       uid: '12wefdefsdss',
@@ -97,6 +101,8 @@ export class ApiService {
       delivery_time: 25,
       distance: 2.5,
       price: 100,
+      latitude: 3.1448499743415494,
+      longitude: 101.7689672668845
     },
     {
       uid: '12wefdefsdss',

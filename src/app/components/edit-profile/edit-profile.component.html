@@ -1,3 +1,66 @@
-<p>
-  edit-profile works!
-</p>
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <ion-title color="dark">EDIT ACCOUNT</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <ion-list class="ion-padding-horizontal ion-margin-bottom">
+      <ion-item class="ion-margin-vertical">
+        <ion-label position="floating">PHONE NUMBER</ion-label>
+        <ion-input
+          #phoneInput
+          type="tel"
+          minlength="10"
+          maxlength="10"
+          required
+          name="phone"
+          [ngModel]="profile?.phone"
+          #phone="ngModel"
+        ></ion-input>
+        <ion-icon
+          name="checkmark-outline"
+          slot="end"
+          color="primary"
+          *ngIf="phone.valid"
+        ></ion-icon>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="floating">EMAIL ADDRESS</ion-label>
+        <ion-input
+          type="email"
+          required
+          name="email"
+          [ngModel]="profile?.email"
+          #email="ngModel"
+        ></ion-input>
+        <ion-icon
+          name="checkmark-outline"
+          slot="end"
+          color="primary"
+          *ngIf="email.valid"
+        ></ion-icon>
+      </ion-item>
+    </ion-list>
+
+    <div class="ion-padding-horizontal">
+      <ion-button 
+      expand="block" 
+      type="submit" 
+      [disabled]="!f.valid"
+      *ngIf="!isSubmitted"
+      >UPDATE</ion-button>
+
+      <ion-button
+      color="primary"
+      expand="block"
+      *ngIf="isSubmitted"
+      [disabled]="!f.valid"
+      >
+        <ion-spinner name="crescent"></ion-spinner>
+      </ion-button>
+    </div>
+  </form>
+</ion-content>

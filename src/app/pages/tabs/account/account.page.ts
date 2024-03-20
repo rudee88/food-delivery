@@ -6,6 +6,7 @@ import { CartService } from '../../../services/cart/cart.service';
 import { Order } from 'src/app/models/order.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { EditProfileComponent } from 'src/app/components/edit-profile/edit-profile.component';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 
 @Component({
   selector: 'app-account',
@@ -17,31 +18,25 @@ export class AccountPage implements OnInit, OnDestroy {
   profile: any = {};
   orders: Order[] = [];
   ordersSub: Subscription;
+  profileSub: Subscription;
 
   constructor(
     private orderService: OrderService,
     private cartService: CartService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private profileService: ProfileService
     ) {}
 
   ngOnInit() {
     this.ordersSub = this.orderService.orders.subscribe(order => {
       console.log('order data: ', order);
       this.orders = order;
-      // if (order instanceof Array) {
-      //   this.orders = order;
-      // } else {
-      //   if (order?.delete) {
-      //     this.orders = this.orders.filter(x => x.id != order.id);
-      //   } else if (order?.update) {
-      //     const index = this.orders.findIndex(x => x.id == order.id);
-      //     this.orders[index] = order;
-      //   } else {
-      //     this.orders = this.orders.concat(order);
-      //   }
-      // }
     }, e => {
       console.log(e);
+    });
+    this.profileSub = this.profileService.profile.subscribe(profile => {
+      this.profile = profile;
+      console.log(profile);
     });
       this.getData();
   }
@@ -51,7 +46,7 @@ export class AccountPage implements OnInit, OnDestroy {
     setTimeout(async () => {
       this.profile = {
         name: 'Rudy Amri',
-        phone: '013-8944432',
+        phone: '0138944432',
         email: 'rudy.amri88@gmail.com',
       };
   
@@ -90,6 +85,7 @@ export class AccountPage implements OnInit, OnDestroy {
 
   ngOnDestroy(){
       if (this.ordersSub) this.ordersSub.unsubscribe();
+      if (this.profileSub) this.profileSub.unsubscribe();
   }
 }
 

@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { IonContent, NavController } from '@ionic/angular';
 import * as moment from 'moment';
 
@@ -39,10 +39,23 @@ export class CartPage implements OnInit, OnDestroy {
     private addressService: AddressService
     ) { }
 
-  ngOnInit() {
-    this.addressSub = this.addressService.addressChange.subscribe(address => {
+  async ngOnInit() {
+    await this.getData();
+    this.addressSub = this.addressService.addressChange.subscribe(async address => {
       console.log('new address: ', address);
       this.location = address;
+      if (this.location?.id && this.location?.id !== '') {
+        const radius = this.addressService.radius;
+        const result = await this.cartService.checkCart(this.location.lat, this.location.lng, radius);
+        console.log('result distance: ', result);
+        if (result) {
+          this.globalService.errorToast(
+            'Your location is too far from the restaurant in the cart, kindly search from some other restaurant nearby.',
+            5000
+          );
+          await this.cartService.clearCart();
+        }
+      }
     });
     this.cartSub = this.cartService.cart.subscribe(cart => {
       console.log('cart page: ', cart);
@@ -50,7 +63,6 @@ export class CartPage implements OnInit, OnDestroy {
       if (!this.model) this.location = {} as Address;
       console.log('cart page model: ', this.model);
     });
-    this.getData();
   }
 
   async getData() {
@@ -66,7 +78,7 @@ export class CartPage implements OnInit, OnDestroy {
     console.log('urlCheck: ', this.urlCheck);
     url.push(this.urlCheck);
     this.url = url;
-    console.log(this.url);
+    console.log('url check:', this.url);
   }
 
   getPreviousUrl() {{
@@ -81,14 +93,23 @@ export class CartPage implements OnInit, OnDestroy {
     this.cartService.quantityPlus(index);
   }
 
-  onAddAddress() {
+  onAddAddress(location?) {
     let url: any;
+    let navData: NavigationExtras;
+    if (location) {
+      location.from = 'cart';
+      navData = {
+        queryParams: {
+          data: JSON.stringify(location)
+        }
+      };
+    }
     if (this.urlCheck == 'tabs') {
       url = ['/', 'tabs', 'address', 'edit-address'];
     } else {
       url = [this.router.url, 'address', 'edit-address'];
     }
-    this.router.navigate(url);
+    this.router.navigate(url, navData);
   }
 
 

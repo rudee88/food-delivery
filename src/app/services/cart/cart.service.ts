@@ -31,13 +31,13 @@ export class CartService {
     return this.storageService.getStorage('cart');
   }
 
-  async getCartData() {
+  async getCartData(val?) {
     let data: any = await this.getCart();
     if (data?.value) {
       this.model = await JSON.parse(data.value);
       console.log('data: ', this.model);
       await this.calculate();
-      this._cart.next(this.model);
+      if (!val) this._cart.next(this.model);
     }
   }
 
@@ -69,11 +69,11 @@ export class CartService {
     );
   }
 
-   async orderToCart(order: Order) {
+  async orderToCart(order: Order) {
     console.log('reorder:', order);
     const data = {
       restaurant: order.restaurant,
-      items: order.order
+      items: order.order,
     };
     this.model = data;
     await this.calculate();
@@ -117,7 +117,10 @@ export class CartService {
         console.log('model: ', this.model);
         this.model.items = [...items];
       }
-      if (this.model.items[index].quantity && this.model.items[index].quantity !== 0) {
+      if (
+        this.model.items[index].quantity &&
+        this.model.items[index].quantity !== 0
+      ) {
         this.model.items[index].quantity -= 1; // this.model.items[index].quantity = this.model.items[index].quantity - 1
       } else {
         this.model.items[index].quantity = 0;
@@ -171,5 +174,44 @@ export class CartService {
     if (model) this.model = model;
     this.storageService.setStorage('cart', JSON.stringify(this.model));
     // this._cart.next(this.model);
+  }
+
+  deg2rad(deg) {
+    return deg * (Math.PI / 180);
+  }
+
+  getDistanceFromLatLngInKm(lat1, lng1, lat2, lng2) {
+    let radius = 6371; //radius of earth in km
+    let lat = this.deg2rad(lat2 - lat1);
+    let lng = this.deg2rad(lng2 - lng1);
+
+    let result =
+      Math.sin(lat / 2) * Math.sin(lat / 2) +
+      Math.cos(this.deg2rad(lat1)) *
+        Math.cos(this.deg2rad(lat2)) *
+        Math.sin(lng / 2) *
+        Math.sin(lng / 2);
+    var c = 2 * Math.atan2(Math.sqrt(result), Math.sqrt(1 - result));
+    var d = radius * c; // Distance in km
+    return d;
+  }
+
+  async checkCart(lat1, lng1, radius) {
+    let distance: number;
+    // if (this.model?.restaurant) {
+    //   distance = this.getDistanceFromLatLngInKm(lat1, lng1, this.model.restaurant.latitude, this.model.restaurant.longitude);
+    // } else {
+    //   await this.getCartData(1);
+    //   distance = this.getDistanceFromLatLngInKm(lat1, lng1, this.model.restaurant.latitude, this.model.restaurant.longitude);
+    // }
+
+    await this.getCartData(1);
+    if (this.model?.restaurant) {
+      distance = this.getDistanceFromLatLngInKm(lat1, lng1, this.model.restaurant.latitude, this.model.restaurant.longitude);
+      console.log('distance: ', distance);
+      if (distance > radius) {
+        return true
+      } else return false;
+    } else return false;
   }
 }

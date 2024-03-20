@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title color="tertiary">Cart</ion-title>
-    <ion-buttons slot="start" *ngIf="urlCheck && urlCheck !== 'tabs'">
+    <ion-buttons slot="start" *ngIf="urlCheck && urlCheck === 'tabs'">
       <ion-back-button [defaultHref]="getPreviousUrl()"></ion-back-button>
     </ion-buttons>
   </ion-toolbar>
@@ -89,7 +89,7 @@
       </ion-col>
     </ion-row>
 
-    <ion-item lines="none" *ngIf="location?.lat">
+    <ion-item lines="none" *ngIf="location?.lat && location?.id && location?.id !== ''">
       <ion-button
         slot="end"
         (click)="onChangeAddress()"
@@ -107,7 +107,33 @@
       </ion-label>
     </ion-item>
 
-    <ion-row *ngIf="location?.lat">
+    <ion-item lines="none" *ngIf="location?.lat && (!location?.id || location?.id === '')">
+      <!-- <ion-button
+        slot="end"
+        (click)="onAddAddress(location)"
+        size="small"
+        fill="clear"
+      >
+        ADD
+      </ion-button> -->
+      <ion-icon slot="start" name="location-outline"></ion-icon>
+      <ion-label>
+        <h5>You are in a new location!</h5>
+        <ion-text color="medium">
+          <p>{{location.address}}</p>
+        </ion-text>
+      </ion-label>
+    </ion-item>
+    <ion-button
+        *ngIf="location?.lat && (!location?.id || location?.id === '')"
+        expand="block"
+        color="success"
+        (click)="onAddAddress(location)"
+      >
+        ADD ADDRESS TO PROCEED
+      </ion-button>
+
+    <ion-row *ngIf="location?.lat && location?.id  && location?.id !== ''">
       <ion-col size="6" class="ion-no-padding" (click)="onScrollToBottom()">
         <ion-item lines="none" color="light" class="ion-no-padding">
           <ion-label>

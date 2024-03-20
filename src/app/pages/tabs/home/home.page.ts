@@ -8,7 +8,15 @@ import { Restaurant } from 'src/app/models/restaurant.model';
 import { AddressService } from 'src/app/services/address/address.service';
 import { ApiService } from 'src/app/services/api/api.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 import { LocationService } from 'src/app/services/location/location.service';
+
+interface AddressResponse {
+  address_components: {
+    short_name: string;
+  }[];
+  formatted_address: string;
+}
 
 @Component({
   selector: 'app-home',
@@ -27,18 +35,19 @@ export class HomePage implements OnInit, OnDestroy {
     private addressService: AddressService,
     private globalService: GlobalService,
     private locationService: LocationService,
-    private router: Router
+    private router: Router,
+    private mapService: GoogleMapsService
   ) {}
 
   ngOnInit() {
-    console.log('ngOnInit');
     this.addressSub = this.addressService.addressChange.subscribe(
       (address) => {
         console.log('address: ', address);
         if (address && address?.lat) {
           if (!this.isLoading) this.isLoading = true;
           this.location = address;
-          this.nearbyApiCall(address.lat, address.lng);
+          // this.nearbyApiCall(address.lat, address.lng);
+          this.nearbyApiCall();
         } else {
           if (address && (!this.location || !this.location?.lat)) {
             this.searchLocation('home', 'home-modal');
@@ -74,7 +83,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.banners = this.api.banners;
   }
 
-  nearbyApiCall(lat, lng) {
+  nearbyApiCall() {
+    console.log(this.location);
+    this.isLoading = false;
     this.restaurants = this.api.restaurants;
   }
 
@@ -82,7 +93,20 @@ export class HomePage implements OnInit, OnDestroy {
     try {
       const position = await this.locationService.getCurrentLocation();
       const { latitude, longitude } = position.coords;
-      await this.getData(latitude, longitude);
+      const address: AddressResponse = await this.mapService.getAddress(latitude, longitude) as AddressResponse;
+      if (address) {
+        this.location = new Address(
+          '',
+          '',
+          address.address_components[0].short_name,
+          address.formatted_address,
+          '',
+          '',
+          latitude,
+          longitude
+        );
+        await this.getData();
+      }
       console.log('restaurants', this.restaurants);
       this.isLoading = false;
     } catch (e) {
@@ -92,10 +116,13 @@ export class HomePage implements OnInit, OnDestroy {
     }
   }
 
-  async getData(lat, lng) {
+  async getData() {
     try {
       this.restaurants = [];
-      await this.nearbyApiCall(lat, lng);
+      // const address = this.addressService.checkExistAddress(lat, lng, this.location);
+      const address = this.addressService.checkExistAddress(this.location);
+      console.log('address exist: ', address);
+      //  await this.nearbyApiCall(lat, lng);
     } catch (e) {
       console.log(e);
       this.globalService.errorToast();
@@ -120,7 +147,7 @@ export class HomePage implements OnInit, OnDestroy {
           this.searchLocation('select-place');
         } else {
           this.location = modal;
-          await this.getData(this.location.lat, this.location.lng);
+          await this.getData();
         }
       }
     } catch(e) {
