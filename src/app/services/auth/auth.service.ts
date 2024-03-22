@@ -23,8 +23,8 @@ export class AuthService {
     return await this.storage.setStorage('uid', 'SDADSAJKDSJ');
   }
 
-  resetPassword() {
-
+  async resetPassword(email: string) {
+    return await email;
   }
 
   logOut() {
