@@ -12,15 +12,15 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<any> {
     // call login api
-    return await this.storage.setStorage('uid', 'SDADSAJKDSJ')
+    return await this.storage.setStorage('uid', 'SDADSAJKDSJ');
   }
 
   async getId() {
     return (await this.storage.getStorage('uid')).value;
   }
 
-  register() {
-
+  async register(formValue) {
+    return await this.storage.setStorage('uid', 'SDADSAJKDSJ');
   }
 
   resetPassword() {

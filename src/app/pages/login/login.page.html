@@ -37,7 +37,7 @@
           ></ion-input>
       </ion-item>
       <ion-text color="danger" *ngIf="!passwordCtrl.valid && passwordCtrl.touched" class="ion-text-center">
-        <p class="errorMsg">* Password must of minimum 8 characters long</p>
+        <p class="errorMsg">* Password must be of minimum 8 characters long</p>
         </ion-text>
 
         <p class="ion-text-right">Forgot password?</p>
@@ -65,7 +65,7 @@
 
   </form>
 
-  <ion-text class="ion-text-center" color="primary">
+  <ion-text class="ion-text-center" color="primary" routerLink="/login/signup">
     <p class="margin-top">Don't have an account?
       <b>Sign Up</b>
     </p>

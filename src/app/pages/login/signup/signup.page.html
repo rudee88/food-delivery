@@ -1,13 +1,121 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>signup</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/login"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Create Account</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">signup</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
+
+  <form #f1="ngForm" (ngSubmit)="onSubmit(f1)">
+    <ion-list lines="none">
+
+      <ion-item color="light" class="ion-margin-bottom">
+        <ion-icon name="person" color="primary" slot="start"></ion-icon>
+        <ion-input
+           type="text"
+           name="name"
+           ngModel
+           #name="ngModel"
+           placeholder="Name" 
+           required
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="!name.valid && name.touched">
+        <p class="errorMsg">* Please enter your name</p>
+        </ion-text>
+
+      <ion-item color="light" class="ion-margin-bottom">
+        <ion-icon name="mail" color="primary" slot="start"></ion-icon>
+        <ion-input
+           type="email"
+           name="email"
+           ngModel
+           email
+           #emailCtrl="ngModel"
+           placeholder="Email" 
+           required
+          ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="!emailCtrl.valid && emailCtrl.touched">
+        <p class="errorMsg">* Please enter a valid email address</p>
+        </ion-text>
+
+        <ion-item color="light" class="ion-margin-bottom">
+          <ion-icon name="call" color="primary" slot="start"></ion-icon>
+          <ion-input
+             type="tel"
+             name="phone"
+             ngModel
+             #phone="ngModel"
+             placeholder="Phone" 
+             required
+             minlength="10"
+             maxlength="11"
+            ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="!phone.valid && phone.touched">
+          <p class="errorMsg">* Please enter a valid phone number</p>
+          </ion-text>
+
+      <ion-item color="light">
+        <ion-icon name="key" color="primary" slot="start"></ion-icon>
+        <ion-input
+           type="password"
+           name="password"
+           ngModel
+           #passwordCtrl="ngModel"
+           placeholder="Password" 
+           required
+           minlength="8"
+          ></ion-input>
+      </ion-item>
+      <ion-text color="danger" *ngIf="!passwordCtrl.valid && passwordCtrl.touched">
+        <p class="errorMsg">* Password must be of minimum 8 characters long</p>
+        </ion-text>
+
+        <ion-item color="light">
+          <ion-icon name="key" color="primary" slot="start"></ion-icon>
+          <ion-input
+             type="password"
+             name="c_password"
+             ngModel
+             #c_password="ngModel"
+             placeholder="Confirm Password" 
+             required
+             minlength="8"
+            ></ion-input>
+        </ion-item>
+        <ion-text color="danger" *ngIf="!c_password.valid && c_password.touched">
+          <p class="errorMsg">* Password must be of minimum 8 characters long</p>
+          </ion-text>
+          <ion-text color="danger" *ngIf="(!c_password.valid && c_password.touched) || (c_password.value !== passwordCtrl.value && c_password.touched)">
+            <p class="errorMsg">* Password mismatch! You have entered a different password</p>
+            </ion-text>
+
+    </ion-list>
+
+      <ion-button 
+      *ngIf="!isLoading"
+      [disabled]="!f1.valid || c_password.value !== passwordCtrl.value"
+      color="primary" 
+      expand="block" 
+      shape="round" 
+      type="submit">
+      SIGN UP
+    </ion-button>
+
+    <ion-button
+      *ngIf="isLoading"
+      [disabled]="!f1.valid || c_password.value !== passwordCtrl.value"
+      color="primary" 
+      expand="block" 
+      shape="round">
+      <ion-spinner name="circles"></ion-spinner>
+    </ion-button>
+
+  </form>
+
 </ion-content>
