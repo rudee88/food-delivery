@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,8 @@ import { StorageService } from '../storage/storage.service';
 export class AuthService {
 
   constructor(
-    private storage: StorageService
+    private storage: StorageService,
+    private fireAuth: AngularFireAuth
   ) { }
 
   async login(email: string, password: string): Promise<any> {
@@ -21,7 +23,8 @@ export class AuthService {
 
   async register(formValue) {
     try {
-      
+      const register = this.fireAuth.createUserWithEmailAndPassword(formValue.email, formValue.password);
+      console.log('registered user: ', register);
     } catch(e) {
       throw(e);
     }
