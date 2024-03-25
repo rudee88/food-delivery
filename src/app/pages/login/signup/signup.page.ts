@@ -30,6 +30,7 @@ export class SignupPage implements OnInit {
     this.authService.register(form.value).then(data => {
       this.router.navigateByUrl('/tabs');
       this.isLoading = false;
+      form.reset();
     })
     .catch(e => {
       console.log(e);

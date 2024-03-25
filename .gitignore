@@ -22,6 +22,9 @@ log.txt
 /www
 /platforms
 /plugins
+node_modules/
+/functions/
+
 
 # Compiled output
 /dist
