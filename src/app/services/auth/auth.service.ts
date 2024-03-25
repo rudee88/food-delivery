@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from 'src/app/models/user.model';
 import { environment } from 'src/environments/environment';
 
@@ -34,7 +34,11 @@ export class AuthService {
         password: formValue.password
       };
 
-      const response = this.http.post<User>(environment.serverBaseUrl + 'user/signup', data).toPromise();
+      const body = new HttpParams({
+        fromObject: data
+      })
+
+      const response = this.http.post<User>(environment.serverBaseUrl + 'user/signup', body).toPromise();
       console.log(response);
       return response;
     } catch(e) {
