@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { User } from 'src/app/models/user.model';
-import { environment } from 'src/environments/environment';
+import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +9,7 @@ export class AuthService {
 
   constructor(
     private storage: StorageService,
-    private http: HttpClient
+    private api: ApiService
   ) { }
 
   async login(email: string, password: string): Promise<any> {
@@ -34,11 +32,7 @@ export class AuthService {
         password: formValue.password
       };
 
-      const body = new HttpParams({
-        fromObject: data
-      })
-
-      const response = this.http.post<User>(environment.serverBaseUrl + 'user/signup', body).toPromise();
+      const response = this.api.post('user/signup', data);
       console.log(response);
       return response;
     } catch(e) {

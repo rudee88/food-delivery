@@ -5,6 +5,8 @@ import { Address } from './../../models/address.model';
 import { Category } from 'src/app/models/category.model';
 import { Item } from 'src/app/models/item.model';
 import { Order } from 'src/app/models/order.model';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -362,5 +364,19 @@ export class ApiService {
     },
   ];
 
-  constructor() {}
+  constructor(
+    private http: HttpClient
+  ) {}
+
+  get(url) {
+    return this.http.get<any>(environment.serverBaseUrl + url).toPromise();
+  }
+
+  post(url, data) {
+    const body = new HttpParams({
+      fromObject: data
+    })
+    return this.http.post<any>(environment.serverBaseUrl + url, body).toPromise();
+  }
+
 }
