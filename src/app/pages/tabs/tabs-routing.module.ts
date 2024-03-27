@@ -43,6 +43,10 @@ const routes: Routes = [
     path: 'address',
     loadChildren: () => import('./address/address.module').then( m => m.AddressPageModule)
   },
+  {
+    path: 'otp',
+    loadChildren: () => import('./otp/otp.module').then( m => m.OtpPageModule)
+  },
 ];
 
 @NgModule({
