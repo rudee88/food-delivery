@@ -30,6 +30,7 @@ export class SignupPage implements OnInit {
     this.isLoading = true;
     console.log('form: ', form.value);
     this.authService.register(form.value).then(data => {
+      // console.log('signup user data: ', data);
       this.router.navigateByUrl('/tabs/otp');
       this.isLoading = false;
       form.reset();

@@ -6,10 +6,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./otp.page.scss'],
 })
 export class OtpPage implements OnInit {
+  config = {
+    length: 6,
+    allowNumbersOnly: true,
+    inputClass: 'otp-input-style'
+  }
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onResend() {
+
+  }
+
+  onVerify() {
+    
   }
 
 }
