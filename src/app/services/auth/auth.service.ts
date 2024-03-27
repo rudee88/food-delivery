@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
+<<<<<<< HEAD
 import { ApiService } from '../api/api.service';
+=======
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+>>>>>>> master
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +13,11 @@ export class AuthService {
 
   constructor(
     private storage: StorageService,
+<<<<<<< HEAD
     private api: ApiService
+=======
+    private fireAuth: AngularFireAuth
+>>>>>>> master
   ) { }
 
   async login(email: string, password: string): Promise<any> {
@@ -23,6 +31,7 @@ export class AuthService {
 
   async register(formValue) {
     try {
+<<<<<<< HEAD
       const data = {
         email: formValue.email,
         phone: formValue.phone,
@@ -37,6 +46,12 @@ export class AuthService {
       return response;
     } catch(e) {
       throw(e)
+=======
+      const register = this.fireAuth.createUserWithEmailAndPassword(formValue.email, formValue.password);
+      console.log('registered user: ', register);
+    } catch(e) {
+      throw(e);
+>>>>>>> master
     }
   }
 
