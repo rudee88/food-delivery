@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +8,6 @@ export class AuthService {
 
   constructor(
     private storage: StorageService,
-    private fireAuth: AngularFireAuth
   ) { }
 
   async login(email: string, password: string): Promise<any> {
