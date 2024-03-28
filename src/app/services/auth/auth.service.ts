@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
 import { ApiService } from '../api/api.service';
+import { from } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +29,12 @@ export class AuthService {
     }
   }
 
-  async getId() {
-    return (await this.storage.getStorage('uid')).value;
+  async getToken() {
+    return (await this.storage.getStorage('rsp_foodDelivery_token')).value;
+  }
+
+  isLoggedIn() {
+    return from(this.getToken());
   }
 
   async register(formValue) {
