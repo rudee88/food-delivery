@@ -28,7 +28,7 @@ export class LoginPage implements OnInit {
   async isLoggedIn() {
     try {
       this.globalService.showLoader();
-      const val = await this.authService.getId();
+      const val = await this.authService.getToken();
       console.log('uid value:', val);
       if (val) this.navigate();
       this.globalService.hideLoader();
