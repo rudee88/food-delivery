@@ -368,8 +368,11 @@ export class ApiService {
     private http: HttpClient
   ) {}
 
-  get(url) {
-    return this.http.get<any>(environment.serverBaseUrl + url).toPromise();
+  get(url, data?) {
+    // data = new HttpParams({
+    //   fromObject: data
+    // })
+    return this.http.get<any>(environment.serverBaseUrl + url, { params: data }).toPromise();
   }
 
   post(url, data) {

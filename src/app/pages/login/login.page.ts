@@ -16,10 +16,10 @@ export class LoginPage implements OnInit {
   isLogin = false;
 
   constructor(
-    private authService: AuthService, 
+    private authService: AuthService,
     private router: Router,
     private globalService: GlobalService
-    ) {}
+  ) {}
 
   ngOnInit() {
     this.isLoggedIn();
@@ -28,11 +28,11 @@ export class LoginPage implements OnInit {
   async isLoggedIn() {
     try {
       this.globalService.showLoader();
-      const val = await this.authService.getId()
+      const val = await this.authService.getId();
       console.log('uid value:', val);
-      if (val) this.navigate()
+      if (val) this.navigate();
       this.globalService.hideLoader();
-    } catch(e) {
+    } catch (e) {
       console.log(e);
       this.globalService.hideLoader();
     }
@@ -62,6 +62,11 @@ export class LoginPage implements OnInit {
       .catch((e) => {
         console.log(e);
         this.isLogin = false;
+        let msg = 'Could not sign in, please try again';
+        if (e?.error?.message) {
+          msg = e.error.message;
+        }
+        this.globalService.showAlert(msg);
       });
   }
 

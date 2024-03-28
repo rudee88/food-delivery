@@ -13,8 +13,18 @@ export class AuthService {
   ) { }
 
   async login(email: string, password: string): Promise<any> {
-    // call login api
-    return await this.storage.setStorage('uid', 'SDADSAJKDSJ');
+    try {
+      const data = {
+        email,
+        password
+      };
+
+      const response = this.api.get('user/login', data);
+      console.log(response);
+      return response;
+    } catch(e) {
+      throw(e)
+    }
   }
 
   async getId() {
