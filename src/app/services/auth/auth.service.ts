@@ -58,7 +58,7 @@ export class AuthService {
 
   setUserData(token: string, user?) {
     // const data = {
-    //   email: user.email,
+    //   email: user.email, test
     //   type: user.type
     // };
     this.storage.setStorage('rsp_foodDelivery_token', token);
