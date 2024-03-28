@@ -1,7 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, switchMap } from 'rxjs';
-import { StorageService } from '../storage/storage.service';
 import { AuthService } from '../auth/auth.service';
 import { environment } from 'src/environments/environment';
 
