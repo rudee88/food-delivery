@@ -13,22 +13,15 @@ export class AuthGuard implements CanLoad {
     private router: Router
     ) {}
 
-  canLoad(
+  async canLoad(
     route: Route,
-    segments: UrlSegment[]): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    // return true;
-      return this.authService.getToken().then(id => {
-        console.log('auth guard checking id: ', id);
-        if (id) return true;
-        else {
-          this.router.navigateByUrl('/login');
-          return false;
-        }
-      })
-      .catch(e => {
-        console.log(e);
-        this.router.navigateByUrl('/login');
-          return false;
-      })
-  }
+    segments: UrlSegment[]): Promise<boolean> {
+      const token = await this.authService.isLoggedIn().toPromise();
+      console.log(token);
+      if (token) return true;
+      else {
+        this.router.navigateByUrl('/login', { replaceUrl: true });
+        return false;
+      }
+    } 
 }

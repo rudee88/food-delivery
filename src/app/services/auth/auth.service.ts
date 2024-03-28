@@ -1,12 +1,21 @@
 import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
 import { ApiService } from '../api/api.service';
-import { from } from 'rxjs';
+import { BehaviorSubject, from, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  private _token = new BehaviorSubject<string>(null);
+
+  get token() {
+    return this._token.asObservable();
+  }
+
+  updateToken(value) {
+    this._token.next(value);
+  }
 
   constructor(
     private storage: StorageService,
@@ -30,7 +39,12 @@ export class AuthService {
   }
 
   async getToken() {
-    return (await this.storage.getStorage('rsp_foodDelivery_token')).value;
+    let token = this._token.value;
+    if (!token) {
+      token = (await this.storage.getStorage('rsp_foodDelivery_token')).value;
+      this.updateToken(token);
+    }
+    return token;
   }
 
   isLoggedIn() {
@@ -67,6 +81,7 @@ export class AuthService {
     //   type: user.type
     // };
     this.storage.setStorage('rsp_foodDelivery_token', token);
+    this.updateToken(token);
     // this.storage.setStorage('rsp_foodDelivery_token', JSON.stringify(data));
   }
 

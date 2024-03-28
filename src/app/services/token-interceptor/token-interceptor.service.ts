@@ -17,7 +17,7 @@ export class TokenInterceptorService implements HttpInterceptor {
     const isApiUrl = req.url.startsWith(environment.serverBaseUrl)
     return this.authService.isLoggedIn().pipe(
       switchMap(token => {
-        console.log('token: ', token);
+        // console.log('token: ', token);
         if (token && isApiUrl) {
           req = req.clone({
             setHeaders: {
