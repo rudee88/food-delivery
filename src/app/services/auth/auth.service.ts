@@ -19,7 +19,8 @@ export class AuthService {
         password
       };
 
-      const response = this.api.get('user/login', data);
+      const response = await this.api.get('user/login', data);
+      this.setUserData(response.token);
       console.log(response);
       return response;
     } catch(e) {
@@ -42,8 +43,9 @@ export class AuthService {
         password: formValue.password
       };
 
-      const response = this.api.post('user/signup', data);
+      const response = await this.api.post('user/signup', data);
       console.log(response);
+      this.setUserData(response.token);
       return response;
     } catch(e) {
       throw(e)
@@ -52,6 +54,15 @@ export class AuthService {
 
   async resetPassword(email: string) {
     return await email;
+  }
+
+  setUserData(token: string, user?) {
+    // const data = {
+    //   email: user.email,
+    //   type: user.type
+    // };
+    this.storage.setStorage('rsp_foodDelivery_token', token);
+    // this.storage.setStorage('rsp_foodDelivery_token', JSON.stringify(data));
   }
 
   logOut() {
