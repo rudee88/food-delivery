@@ -74,6 +74,10 @@ export class LoginPage implements OnInit {
     this.router.navigateByUrl('/tabs');
   }
 
+  onReset(event) {
+    console.log(event);
+  }
+
   onSubmit(form: NgForm) {
     console.log(form);
     if (!form.valid) return;
