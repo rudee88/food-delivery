@@ -382,4 +382,11 @@ export class ApiService {
     return this.http.post<any>(environment.serverBaseUrl + url, body).toPromise();
   }
 
+  patch(url, data) {
+    const body = new HttpParams({
+      fromObject: data
+    })
+    return this.http.patch<any>(environment.serverBaseUrl + url, body).toPromise();
+  }
+
 }

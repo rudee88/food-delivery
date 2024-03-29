@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { User } from 'src/app/models/user.model';
+import { ApiService } from '../api/api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,9 @@ export class ProfileService {
     return this._profile.asObservable();
   }
 
-  constructor() { }
+  constructor(
+    private apiService: ApiService
+  ) { }
 
   updateProfile(profile, param) {
     try {
@@ -26,4 +29,23 @@ export class ProfileService {
       console.log(e);
     }
   }
+
+  resendOtp() {
+    return this.apiService.get('user/send/verification/email').then(response => {
+      return response;
+    })
+    .catch(e => {
+      throw(e);
+    });
+  }
+
+  async verifyEmailOtp(data) {
+    try {
+      const response = await this.apiService.patch('user/verify', data);
+      return response;
+    } catch(e) {
+
+    }
+  }
+
 }

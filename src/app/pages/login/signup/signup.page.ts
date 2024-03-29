@@ -34,6 +34,7 @@ export class SignupPage implements OnInit {
       this.router.navigateByUrl('/tabs/otp');
       this.isLoading = false;
       form.reset();
+      this.globalService.successToast('An OTP is sent to your Email for Email Verification');
     })
     .catch(e => {
       console.log(e);
