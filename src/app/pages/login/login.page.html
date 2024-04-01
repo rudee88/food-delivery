@@ -74,13 +74,20 @@
   </ion-text>
 
   <ion-modal 
+  #forgot_pwd_modal
   trigger="forgot-password"
   (ionModalDidDismiss)="onReset($event)"
   [breakpoints]="[0.1, 0.5, 0.9]"
   [initialBreakpoint]="0.5"
+  
   >
     <ng-template>
-      <app-reset-password></app-reset-password>
+      <app-reset-password 
+      [model]="reset_pwd_model"
+      (check_email)="onSendEmailOtp($event)"
+      (verify_otp)="onVerifyOtp($event)"
+      (set_password)="onResetPassword($event)"
+      ></app-reset-password>
     </ng-template>
   </ion-modal>
   

@@ -97,21 +97,21 @@
   --height: 70%;
   position: absolute;
   bottom: 0;
-  --border-radius: 5px;
+  --border-radius: 10px 10px 0 0;
 }
 
 .custom-modal::part(content) {
   --height: 78%;
   position: absolute;
   bottom: 0;
-  --border-radius: 5px;
+  --border-radius: 10px 10px 0 0;
 }
 
 .home-modal::part(content) {
   --height: 90%;
   position: absolute;
   bottom: 0;
-  --border-radius: 5px;
+  --border-radius: 10px 10px 0 0;
 }
 
 @media (prefers-color-scheme: dark) {

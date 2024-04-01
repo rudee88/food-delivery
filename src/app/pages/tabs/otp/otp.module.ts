@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { OtpPageRoutingModule } from './otp-routing.module';
 
 import { OtpPage } from './otp.page';
-import { NgOtpInputModule } from 'ng-otp-input';
+import { ComponentsModule } from 'src/app/components/components.module';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { NgOtpInputModule } from 'ng-otp-input';
     FormsModule,
     IonicModule,
     OtpPageRoutingModule,
-    NgOtpInputModule
+    ComponentsModule
   ],
   declarations: [OtpPage]
 })

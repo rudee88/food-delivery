@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 
@@ -10,10 +11,14 @@ import { GlobalService } from 'src/app/services/global/global.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  // type = 'password';
-  // iconName = 'eye-outline';
+  @ViewChild('forgot_pwd_modal') modal: ModalController;
   type = true;
   isLogin = false;
+  reset_pwd_model = {
+    email: '',
+    otp: '',
+    new_password: '',
+  };
 
   constructor(
     private authService: AuthService,
@@ -76,11 +81,29 @@ export class LoginPage implements OnInit {
 
   onReset(event) {
     console.log(event);
+    this.reset_pwd_model = {
+      email: '',
+      otp: '',
+      new_password: '',
+    };
   }
 
   onSubmit(form: NgForm) {
     console.log(form);
     if (!form.valid) return;
     this.login(form);
+  }
+
+  onSendEmailOtp(email) {
+    this.reset_pwd_model = { ...this.reset_pwd_model, email };
+  }
+
+  onVerifyOtp(otp) {
+    this.reset_pwd_model = { ...this.reset_pwd_model, otp };
+  }
+
+  onResetPassword(new_password) {
+    this.reset_pwd_model = { ...this.reset_pwd_model, new_password }
+    this.modal.dismiss();
   }
 }

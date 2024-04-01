@@ -10,11 +10,7 @@ import { ProfileService } from 'src/app/services/profile/profile.service';
 })
 export class OtpPage implements OnInit {
   otp: string;
-  config = {
-    length: 6,
-    allowNumbersOnly: true,
-    inputClass: 'otp-input-style'
-  }
+  length: number;
 
   constructor(
     private globalService: GlobalService,
@@ -23,6 +19,10 @@ export class OtpPage implements OnInit {
   ) { }
 
   ngOnInit() {
+  }
+
+  getOtpLength(length) {
+    this.length = length
   }
 
   onOtpChange(otp) {
@@ -50,7 +50,7 @@ export class OtpPage implements OnInit {
   }
 
   onVerify() {
-    if (this.otp.length !== this.config.length) return this.globalService.showAlert('Please enter proper OTP');
+    if (this.otp.length !== this.length) return this.globalService.showAlert('Please enter proper OTP');
     this.globalService.showLoader();
     this.profileService.verifyEmailOtp({ verification_token: this.otp })
     .then(response => {
