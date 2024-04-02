@@ -71,6 +71,17 @@ export class AuthService {
     }
   }
 
+  async resetPasswordSendOtp(email) {
+    try {
+      const data = { email };
+      const response = await this.api.get('user/reset/password', data);
+      console.log(response);
+      return response;
+    } catch(e) {
+      throw(e)
+    }
+  }
+
   async resetPassword(email: string) {
     return await email;
   }

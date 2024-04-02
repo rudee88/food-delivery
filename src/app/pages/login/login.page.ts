@@ -95,7 +95,23 @@ export class LoginPage implements OnInit {
   }
 
   onSendEmailOtp(email) {
-    this.reset_pwd_model = { ...this.reset_pwd_model, email };
+    this.globalService.showLoader();
+    this.authService
+    .resetPasswordSendOtp(email)
+    .then((data) => {
+      console.log(data);
+      this.reset_pwd_model = { ...this.reset_pwd_model, email };
+      this.globalService.hideLoader();
+    })
+    .catch((e) => {
+      console.log(e);
+      this.globalService.hideLoader();
+      let msg = 'Something went wrong, please try again';
+      if (e?.error?.message) {
+        msg = e.error.message;
+      }
+      this.globalService.showAlert(msg);
+    });
   }
 
   onVerifyOtp(otp) {
