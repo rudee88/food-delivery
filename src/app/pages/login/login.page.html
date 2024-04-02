@@ -84,8 +84,8 @@
     <ng-template>
       <app-reset-password 
       [model]="reset_pwd_model"
-      (check_email)="onSendEmailOtp($event)"
-      (verify_otp)="onVerifyOtp($event)"
+      (check_email)="onSendResetPasswordEmailOtp($event)"
+      (verify_otp)="onVerifyResetPasswordOtp($event)"
       (set_password)="onResetPassword($event)"
       ></app-reset-password>
     </ng-template>

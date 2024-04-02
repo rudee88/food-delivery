@@ -71,10 +71,24 @@ export class AuthService {
     }
   }
 
-  async resetPasswordSendOtp(email) {
+  async sendResetPasswordOtp(email) {
     try {
       const data = { email };
-      const response = await this.api.get('user/reset/password', data);
+      const response = await this.api.get('user/send/reset/password/token', data);
+      console.log(response);
+      return response;
+    } catch(e) {
+      throw(e)
+    }
+  }
+
+  async verifyResetPasswordOtp(email: string, otp: string) {
+    try {
+      const data = { 
+        email,
+        reset_password_token: otp
+      };
+      const response = await this.api.get('user/verify/resetPasswordToken', data);
       console.log(response);
       return response;
     } catch(e) {

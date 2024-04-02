@@ -94,10 +94,10 @@ export class LoginPage implements OnInit {
     this.login(form);
   }
 
-  onSendEmailOtp(email) {
+  onSendResetPasswordEmailOtp(email) {
     this.globalService.showLoader();
     this.authService
-    .resetPasswordSendOtp(email)
+    .sendResetPasswordOtp(email)
     .then((data) => {
       console.log(data);
       this.reset_pwd_model = { ...this.reset_pwd_model, email };
@@ -114,8 +114,24 @@ export class LoginPage implements OnInit {
     });
   }
 
-  onVerifyOtp(otp) {
-    this.reset_pwd_model = { ...this.reset_pwd_model, otp };
+  onVerifyResetPasswordOtp(otp) {
+    this.globalService.showLoader();
+    this.authService
+    .verifyResetPasswordOtp(this.reset_pwd_model.email, otp)
+    .then((data) => {
+      console.log(data);
+      this.reset_pwd_model = { ...this.reset_pwd_model, otp };
+      this.globalService.hideLoader();
+    })
+    .catch((e) => {
+      console.log(e);
+      this.globalService.hideLoader();
+      let msg = 'Something went wrong, please try again';
+      if (e?.error?.message) {
+        msg = e.error.message;
+      }
+      this.globalService.showAlert(msg);
+    });
   }
 
   onResetPassword(new_password) {
