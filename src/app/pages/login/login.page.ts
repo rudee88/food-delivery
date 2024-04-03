@@ -135,7 +135,24 @@ export class LoginPage implements OnInit {
   }
 
   onResetPassword(new_password) {
+    this.globalService.showLoader();
     this.reset_pwd_model = { ...this.reset_pwd_model, new_password }
-    this.modal.dismiss();
+    this.authService
+    .resetPassword(this.reset_pwd_model)
+    .then((data) => {
+      console.log(data);
+      this.globalService.hideLoader();
+      this.modal.dismiss();
+      this.globalService.successToast('Your password is changed successfully. Please login now.');
+    })
+    .catch((e) => {
+      console.log(e);
+      this.globalService.hideLoader();
+      let msg = 'Something went wrong, please try again';
+      if (e?.error?.message) {
+        msg = e.error.message;
+      }
+      this.globalService.showAlert(msg);
+    });
   }
 }

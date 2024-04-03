@@ -96,10 +96,6 @@ export class AuthService {
     }
   }
 
-  async resetPassword(email: string) {
-    return await email;
-  }
-
   setUserData(token: string, user?) {
     // const data = {
     //   email: user.email,
@@ -108,6 +104,16 @@ export class AuthService {
     this.storage.setStorage('rsp_foodDelivery_token', token);
     this.updateToken(token);
     // this.storage.setStorage('rsp_foodDelivery_token', JSON.stringify(data));
+  }
+
+  async resetPassword(data) {
+    try {
+      const response = await this.api.patch('user/reset/password', data);
+      console.log(response);
+      return response;
+    } catch(e) {
+      throw(e)
+    }
   }
 
   logOut() {
