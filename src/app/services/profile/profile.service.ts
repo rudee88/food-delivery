@@ -41,7 +41,7 @@ export class ProfileService {
 
   async verifyEmailOtp(data) {
     try {
-      const response = await this.apiService.patch('user/verify', data);
+      const response = await this.apiService.patch('user/verify/emailToken', data);
       return response;
     } catch(e) {
 
