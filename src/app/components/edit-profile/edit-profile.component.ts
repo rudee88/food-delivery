@@ -32,12 +32,74 @@ export class EditProfileComponent implements OnInit {
       }
       console.log(form.value);
       this.isSubmitted = true;
-        await this.profileService.updateProfile(this.profile, form.value);
+      if (this.profile.email != form.value.email) {
+        this.presentPasswordPrompt(form.value);
+      } else {
+        await this.profileService.updatePhoneNumber(form.value.phone);
+        this.globalService.modalDismiss();
+        this.isSubmitted = false;
+      }
+    } catch (e) {
+      console.log(e);
+      let msg = null;
+      if (e?.error?.message) msg = e.error.message;
+      this.isSubmitted = false;
+      this.globalService.errorToast(msg);
+    }
+  }
+
+  presentPasswordPrompt(data) {
+    this.globalService.showAlert(
+      'Please enter password',
+      'Verify',
+      [{
+        text: 'Cancel',
+        role: 'cancel',
+        handler: () => {
+          console.log('Confirm cancel')
+          this.isSubmitted = false;
+        },
+        
+      },
+      {
+        text: 'Verify',
+        handler: (inputData) => {
+          console.log(inputData.password);
+          if (inputData.password.trim() != 0 && inputData.password.length >= 8) {
+            //update email with phone number
+            this.updateEmail(data, inputData.password);
+          } else {
+            this.globalService.errorToast('Password must be of atleast 8 characters');
+            this.isSubmitted = false;
+          }
+        },
+        
+      }],
+      [{
+        name: 'password',
+        type: 'password',
+        placeHolder: 'Enter Password'
+      }]
+    );
+  }
+
+  async updateEmail(data, password) {
+    try {
+      const profile_data = {
+        phone: data.phone,
+        email: data.email,
+        password: password
+      }
+        await this.profileService.updateProfile(profile_data);
         this.globalService.modalDismiss();
         this.isSubmitted = false;
     } catch (e) {
       console.log(e);
-      this.globalService.errorToast();
+      let msg = null;
+      if (e?.error?.message) msg = e.error.message;
+      this.isSubmitted = false;
+      this.globalService.errorToast(msg);
     }
   }
+
 }

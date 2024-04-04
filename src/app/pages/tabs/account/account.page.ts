@@ -7,6 +7,7 @@ import { Order } from 'src/app/models/order.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { EditProfileComponent } from 'src/app/components/edit-profile/edit-profile.component';
 import { ProfileService } from 'src/app/services/profile/profile.service';
+import { AuthService } from 'src/app/services/auth/auth.service';
 
 @Component({
   selector: 'app-account',
@@ -24,35 +25,39 @@ export class AccountPage implements OnInit, OnDestroy {
     private orderService: OrderService,
     private cartService: CartService,
     private globalService: GlobalService,
-    private profileService: ProfileService
-    ) {}
+    private profileService: ProfileService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit() {
-    this.ordersSub = this.orderService.orders.subscribe(order => {
-      console.log('order data: ', order);
-      this.orders = order;
-    }, e => {
-      console.log(e);
-    });
-    this.profileSub = this.profileService.profile.subscribe(profile => {
+    this.ordersSub = this.orderService.orders.subscribe(
+      (order) => {
+        console.log('order data: ', order);
+        this.orders = order;
+      },
+      (e) => {
+        console.log(e);
+      }
+    );
+    this.profileSub = this.profileService.profile.subscribe((profile) => {
       this.profile = profile;
       console.log(profile);
     });
-      this.getData();
+    this.getData();
   }
 
   async getData() {
-    this.isLoading = true;
-    setTimeout(async () => {
-      this.profile = {
-        name: 'Rudy Amri',
-        phone: '0138944432',
-        email: 'rudy.amri88@gmail.com',
-      };
-  
-      await this.orderService.getOrders();
+    try {
+      this.profileService.getProfile();
+      this.isLoading = true;
+      setTimeout(async () => {
+        await this.orderService.getOrders();
+        this.isLoading = false;
+      }, 1000);
+    } catch (e) {
+      console.log(e);
       this.isLoading = false;
-    },1000);
+    }
   }
 
   async onReorder(order: Order) {
@@ -61,7 +66,7 @@ export class AccountPage implements OnInit, OnDestroy {
     if (data?.value) {
       this.cartService.alertClearCart(null, null, null, order);
     } else {
-      this.cartService.orderToCart(order)
+      this.cartService.orderToCart(order);
     }
   }
 
@@ -81,11 +86,12 @@ export class AccountPage implements OnInit, OnDestroy {
     console.log(order);
   }
 
-  onLogout() {}
+  onLogout() {
+    this.authService.logOut();
+  }
 
-  ngOnDestroy(){
-      if (this.ordersSub) this.ordersSub.unsubscribe();
-      if (this.profileSub) this.profileSub.unsubscribe();
+  ngOnDestroy() {
+    if (this.ordersSub) this.ordersSub.unsubscribe();
+    if (this.profileSub) this.profileSub.unsubscribe();
   }
 }
-

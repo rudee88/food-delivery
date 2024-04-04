@@ -6,7 +6,8 @@ export class User {
         public name?: string,
         public _id?: string,
         public type?: string,
-        public status?: string
+        public status?: string,
+        public email_verified?: boolean
     ) {}
 
 }

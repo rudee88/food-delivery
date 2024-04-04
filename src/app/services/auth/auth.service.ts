@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
 import { ApiService } from '../api/api.service';
 import { BehaviorSubject, from, of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class AuthService {
   }
 
   constructor(
+    private router: Router,
     private storage: StorageService,
     private api: ApiService
   ) { }
@@ -96,14 +98,9 @@ export class AuthService {
     }
   }
 
-  setUserData(token: string, user?) {
-    // const data = {
-    //   email: user.email,
-    //   type: user.type
-    // };
+  setUserData(token: string) {
     this.storage.setStorage('rsp_foodDelivery_token', token);
     this.updateToken(token);
-    // this.storage.setStorage('rsp_foodDelivery_token', JSON.stringify(data));
   }
 
   async resetPassword(data) {
@@ -117,6 +114,8 @@ export class AuthService {
   }
 
   logOut() {
-
+    this.storage.removeStorage('rsp_foodDelivery_token');
+    this._token.next(null);
+    this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 }

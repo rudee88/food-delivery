@@ -18,10 +18,11 @@ export class GlobalService {
     this.isLoading = !this.isLoading;
   }
 
-  showAlert(message: string, header?, buttonArray?) {
+  showAlert(message: string, header?, buttonArray?, inputs?) {
     this.alertCtrl.create({
       header: header ? header : 'Authentication failed',
       message: message,
+      inputs: inputs ? inputs : [],
       buttons: buttonArray ? buttonArray : ['Okay']
     })
     .then(alertEl => alertEl.present());
