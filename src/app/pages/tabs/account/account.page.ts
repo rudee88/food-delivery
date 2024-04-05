@@ -80,6 +80,7 @@ export class AccountPage implements OnInit, OnDestroy {
       swipeToClose: true,
     };
     const modal = await this.globalService.createModal(options);
+    if (modal) {}
   }
 
   onGetHelp(order) {

@@ -8,6 +8,7 @@ import { EmptyScreenComponent } from './empty-screen/empty-screen.component';
 import { SearchLocationComponent } from './search-location/search-location.component';
 import { OtpInputComponent } from './otp-input/otp-input.component';
 import { NgOtpInputModule } from 'ng-otp-input';
+import { OtpScreenComponent } from './otp-screen/otp-screen.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { NgOtpInputModule } from 'ng-otp-input';
     LoadingRestaurantComponent,
     EmptyScreenComponent,
    SearchLocationComponent,
-   OtpInputComponent
+   OtpInputComponent,
+   OtpScreenComponent
   ],
   imports: [
     IonicModule, 
@@ -27,7 +29,8 @@ import { NgOtpInputModule } from 'ng-otp-input';
     LoadingRestaurantComponent,
     EmptyScreenComponent,
     SearchLocationComponent,
-    OtpInputComponent
+    OtpInputComponent,
+    OtpScreenComponent
   ],
 })
 export class ComponentsModule {}
