@@ -53,4 +53,18 @@
     </ion-list>
   </ng-container>
 
+  <ion-modal 
+  #otp_modal
+  [isOpen]="verifyOtp"
+  cssClass="inline-modal"
+  (ionModalDidDismiss)="onResetOtpModal($event)"
+  [breakpoints]="[0.32, 0.5, 0.9]"
+  [initialBreakpoint]="0.32"
+  
+  >
+    <ng-template>
+     <app-otp-screen (verified)="onOtpVerified($event)"></app-otp-screen>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>

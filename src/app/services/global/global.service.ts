@@ -38,6 +38,40 @@ export class GlobalService {
     toast.present();
   }
 
+  async toastDismiss(data?) {
+    await this.toastCtrl.dismiss(data);
+  }
+
+  async showButtonToast(msg, color = 'danger', position?) {
+    const toast = await this.toastCtrl.create({
+      header: 'Alert',
+      message: msg,
+      color: color,
+      position: position || 'bottom',
+      buttons: [
+        {
+          side: 'end',
+          text: 'VERIFY',
+          handler: () => {
+            this.toastDismiss(true);
+          }
+        },
+        {
+          side: 'start',
+          icon: 'close-circle',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel Clicked')
+          }
+        }
+      ]
+    });
+    await toast.present();
+    const { data } = await toast.onDidDismiss();
+    console.log('onDidDismiss resolved with role', data);
+    if (data) return data;
+  }
+
   errorToast(msg?, duration = 4000) {
     this.showToast(msg ? msg : 'No internet Connection', 'danger', 'bottom', duration);
   }

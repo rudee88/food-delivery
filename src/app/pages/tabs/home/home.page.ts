@@ -1,15 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
 import { Address } from 'src/app/models/address.model';
 
 import { Restaurant } from 'src/app/models/restaurant.model';
+import { User } from 'src/app/models/user.model';
 import { AddressService } from 'src/app/services/address/address.service';
 import { ApiService } from 'src/app/services/api/api.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 import { LocationService } from 'src/app/services/location/location.service';
+import { ProfileService } from 'src/app/services/profile/profile.service';
 
 interface AddressResponse {
   address_components: {
@@ -24,22 +27,28 @@ interface AddressResponse {
   styleUrls: ['./home.page.scss'],
 })
 export class HomePage implements OnInit, OnDestroy {
+  @ViewChild('otp_modal') modal: ModalController;
   banners: any[] = [];
   restaurants: Restaurant[] = [];
   isLoading: boolean = false;
   location = {} as Address;
   addressSub: Subscription;
+  profile: User;
+  profileSubs: Subscription;
+  verifyOtp = false;
 
   constructor(
+    private router: Router,
     private api: ApiService,
     private addressService: AddressService,
     private globalService: GlobalService,
     private locationService: LocationService,
-    private router: Router,
-    private mapService: GoogleMapsService
+    private mapService: GoogleMapsService,
+    private profileService: ProfileService
   ) {}
 
   ngOnInit() {
+    this.getProfile();
     this.addressSub = this.addressService.addressChange.subscribe(
       (address) => {
         console.log('address: ', address);
@@ -61,6 +70,13 @@ export class HomePage implements OnInit, OnDestroy {
         this.globalService.errorToast();
       }
     );
+    this.profileSubs = this.profileService.profile.subscribe(profile => {
+      this.profile = profile;
+      console.log('profile: ', profile);
+      if (this.profile && !this.profile?.email_verified) {
+        this.checkEmailVerified();
+      }
+    });
     this.getBanners();
     if (!this.location?.lat) {
       this.getNearbyRestaurants();
@@ -77,6 +93,21 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngAfterViewInit() {
     console.log('ngAfterViewInit');
+  }
+
+  async getProfile() {
+    try {
+      await this.profileService.getProfile();
+    } catch(e) {
+      console.log(e);
+      this.globalService.errorToast();
+    }
+  }
+
+  async checkEmailVerified() {
+    const verify = await this.globalService.showButtonToast('Please verify your email address');
+    console.log('verify: ', verify);
+    if (verify) this.verifyOtp = true;
   }
 
   getBanners() {
@@ -172,8 +203,18 @@ export class HomePage implements OnInit, OnDestroy {
     this.router.navigate(['/', 'tabs', 'address', 'edit-address']);
   }
 
+  onResetOtpModal(value) {
+    console.log('value, ',value);
+    this.verifyOtp = false;
+  }
+
+  onOtpVerified(event) {
+    if (event) this.modal.dismiss();
+  }
+
   ngOnDestroy() {
     if (this.addressSub) this.addressSub.unsubscribe();
+    if (this.profileSubs) this.profileSubs.unsubscribe();
   }
 
 }

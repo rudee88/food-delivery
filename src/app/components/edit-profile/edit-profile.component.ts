@@ -91,7 +91,7 @@ export class EditProfileComponent implements OnInit {
         password: password
       }
         await this.profileService.updateProfile(profile_data);
-        this.globalService.modalDismiss();
+        this.globalService.modalDismiss(true);
         this.isSubmitted = false;
     } catch (e) {
       console.log(e);

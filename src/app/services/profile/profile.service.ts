@@ -23,17 +23,21 @@ export class ProfileService {
 
   async getProfile() {
     try {
-      const profile = await this.apiService.get('user/profile');
-      const data = new User(
-        profile?.email,
-        profile?.phone,
-        profile?.name,
-        profile?._id,
-        profile?.type,
-        profile?.status,
-        profile?.email_verified
-      )
-      this._profile.next(data);
+      const profile_data = this._profile.value;
+      if (!profile_data) {
+        const profile = await this.apiService.get('user/profile');
+      // const data = new User(
+      //   profile?.email,
+      //   profile?.phone,
+      //   profile?.name,
+      //   profile?._id,
+      //   profile?.type,
+      //   profile?.status,
+      //   profile?.email_verified
+      // )
+      this.updateProfileData(profile);
+      }
+      
     } catch(e) {
       console.log(e);
       throw(e);
@@ -44,16 +48,16 @@ export class ProfileService {
     try {
       const profile = await this.apiService.patch('user/update/phone', { phone });
       console.log('profile: ', profile);
-      const data = new User (
-        profile.email,
-        profile.phone,
-        profile.name,
-        profile._id,
-        profile.type,
-        profile.status,
-        profile.email_verified
-      );
-      this._profile.next(data);
+      // const data = new User (
+      //   profile.email,
+      //   profile.phone,
+      //   profile.name,
+      //   profile._id,
+      //   profile.type,
+      //   profile.status,
+      //   profile.email_verified
+      // );
+      this.updateProfileData(profile);
     } catch(e) {
       console.log(e);
     }
@@ -65,16 +69,7 @@ export class ProfileService {
       const profile = profile_data?.user;
       await this.authService.setUserData(profile_data?.token);
       console.log('param: ', profile);
-      const data = new User (
-        profile.email,
-        profile.phone,
-        profile.name,
-        profile._id,
-        profile.type,
-        profile.status,
-        profile.email_verified
-      );
-      this._profile.next(data);
+      this.updateProfileData(profile);
     } catch(e) {
       console.log(e);
       let msg = null;
@@ -95,10 +90,29 @@ export class ProfileService {
   async verifyEmailOtp(data) {
     try {
       const response = await this.apiService.patch('user/verify/emailToken', data);
+      let profile_data: User = this._profile.value;
+      if (profile_data) {
+        profile_data = { ...profile_data, email_verified: true }
+        this.updateProfileData(profile_data);
+      };
       return response;
     } catch(e) {
 
     }
+  }
+
+  updateProfileData(profile) {
+    const data = new User (
+      profile.email,
+      profile.phone,
+      profile.name,
+      profile._id,
+      profile.type,
+      profile.status,
+      profile.email_verified
+    );
+    console.log('profile data: ', data);
+    this._profile.next(data);
   }
 
 }

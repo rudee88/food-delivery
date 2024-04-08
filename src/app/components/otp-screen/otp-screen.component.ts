@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 
@@ -8,6 +8,7 @@ import { ProfileService } from 'src/app/services/profile/profile.service';
   styleUrls: ['./otp-screen.component.scss'],
 })
 export class OtpScreenComponent  implements OnInit {
+  @Input() sendOtp = false;
   otp: string;
   length: number;
   @Output() verified: EventEmitter<boolean> = new EventEmitter();
@@ -18,6 +19,7 @@ export class OtpScreenComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
+    if (this.sendOtp) this.onResend();
   }
 
   onGetOtpLength(length) {
@@ -30,6 +32,7 @@ export class OtpScreenComponent  implements OnInit {
   }
 
   onResend() {
+    console.log('send otp again');
     this.globalService.showLoader();
     this.profileService.resendOtp()
     .then(response => {
@@ -59,6 +62,7 @@ export class OtpScreenComponent  implements OnInit {
         this.verified.emit(false);
       } else {
         this.verified.emit(true);
+        this.globalService.successToast('Your Email is Verified Successfully');
       }
       this.globalService.hideLoader();
     })

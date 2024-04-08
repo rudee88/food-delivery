@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { OrderService } from 'src/app/services/order/order.service';
@@ -8,6 +8,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { EditProfileComponent } from 'src/app/components/edit-profile/edit-profile.component';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-account',
@@ -15,11 +16,13 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   styleUrls: ['./account.page.scss'],
 })
 export class AccountPage implements OnInit, OnDestroy {
+  @ViewChild('otp_modal') modal: ModalController;
   isLoading: boolean;
   profile: any = {};
   orders: Order[] = [];
   ordersSub: Subscription;
   profileSub: Subscription;
+  verifyOtp = false;
 
   constructor(
     private orderService: OrderService,
@@ -48,7 +51,7 @@ export class AccountPage implements OnInit, OnDestroy {
 
   async getData() {
     try {
-      this.profileService.getProfile();
+      await this.profileService.getProfile();
       this.isLoading = true;
       setTimeout(async () => {
         await this.orderService.getOrders();
@@ -80,7 +83,9 @@ export class AccountPage implements OnInit, OnDestroy {
       swipeToClose: true,
     };
     const modal = await this.globalService.createModal(options);
-    if (modal) {}
+    if (modal) {
+      this.verifyOtp = true;
+    }
   }
 
   onGetHelp(order) {
@@ -89,6 +94,15 @@ export class AccountPage implements OnInit, OnDestroy {
 
   onLogout() {
     this.authService.logOut();
+  }
+
+  onResetOtpModal(value) {
+    console.log('value, ',value);
+    this.verifyOtp = false;
+  }
+
+  onOtpVerified(event) {
+    if (event) this.modal.dismiss();
   }
 
   ngOnDestroy() {

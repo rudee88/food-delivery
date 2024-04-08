@@ -34,4 +34,19 @@
       [routerLink]="['/', 'tabs', 'restaurants', restaurant.uid]"></app-restaurant>
     </ion-item-group>
   </ion-list>
+
+  <ion-modal 
+  #otp_modal
+  [isOpen]="verifyOtp"
+  (ionModalDidDismiss)="onResetOtpModal($event)"
+  cssClass="inline-modal"
+  [breakpoints]="[0.32, 0.5, 0.9]"
+  [initialBreakpoint]="0.32"
+  
+  >
+    <ng-template>
+     <app-otp-screen (verified)="onOtpVerified($event)" [sendOtp]="true"></app-otp-screen>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>
