@@ -1,6 +1,6 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { Observable, switchMap, take } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 import { environment } from 'src/environments/environment';
 
@@ -15,7 +15,8 @@ export class TokenInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // throw new Error('Method not implemented.');
     const isApiUrl = req.url.startsWith(environment.serverBaseUrl)
-    return this.authService.isLoggedIn().pipe(
+    return this.authService.token.pipe(
+      take(1),
       switchMap(token => {
         // console.log('token: ', token);
         if (token && isApiUrl) {

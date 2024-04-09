@@ -11,7 +11,10 @@ const routes: Routes = [
   {
     path: 'tabs',
     loadChildren: () => import('./pages/tabs/tabs.module').then( m => m.TabsPageModule),
-    canLoad: [AuthGuard]
+    canLoad: [AuthGuard],
+    data: {
+      role: 'user'
+    }
   },
   {
     path: 'login',
@@ -19,7 +22,11 @@ const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule)
+    loadChildren: () => import('./pages/admin/admin.module').then( m => m.AdminPageModule),
+    canLoad: [AuthGuard],
+    data: {
+      role: 'admin'
+    }
   },
 ];
 

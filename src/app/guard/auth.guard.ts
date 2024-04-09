@@ -1,27 +1,44 @@
 import { Injectable } from '@angular/core';
-import { CanLoad, Route, Router, UrlSegment, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { CanLoad, Route, Router } from '@angular/router';
 import { AuthService } from '../services/auth/auth.service';
+import { GlobalService } from '../services/global/global.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthGuard implements CanLoad {
-
   constructor(
+    private router: Router,
     private authService: AuthService,
-    private router: Router
-    ) {}
+    private globalService: GlobalService
+  ) {}
 
   async canLoad(
-    route: Route,
-    segments: UrlSegment[]): Promise<boolean> {
-      const token = await this.authService.isLoggedIn().toPromise();
-      console.log(token);
-      if (token) return true;
+    route: Route): Promise<boolean> {
+    const existingRole = route.data?.['role'];
+    console.log('existingRole: ', existingRole);
+    const user = await this.authService.getUser();
+    console.log('user: ', user);
+    if (user) {
+      if (user?.type == existingRole) return true;
       else {
-        this.router.navigateByUrl('/login', { replaceUrl: true });
+        this.redirect(user?.type)
         return false;
-      }
-    } 
+      };
+    } else {
+      this.navigate('/login');
+      return false;
+    }
+  }
+
+  navigate(url) {
+    this.router.navigateByUrl(url, { replaceUrl: true });
+  }
+
+
+  redirect(role) {
+    let url = '/tabs';
+    if (role == 'admin') url = '/admin';
+    this.navigate(url);
+  }
 }

@@ -1,6 +1,11 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>admin</ion-title>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Admin Panel</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="authService.logOut()">
+        <ion-icon name="power-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

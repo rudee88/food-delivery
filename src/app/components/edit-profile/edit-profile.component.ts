@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { ProfileService } from 'src/app/services/profile/profile.service';
 
@@ -15,7 +16,8 @@ export class EditProfileComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -90,7 +92,8 @@ export class EditProfileComponent implements OnInit {
         email: data.email,
         password: password
       }
-        await this.profileService.updateProfile(profile_data);
+        const updated_data = await this.profileService.updateProfile(profile_data);
+        await this.authService.setUserData(updated_data?.token);
         this.globalService.modalDismiss(true);
         this.isSubmitted = false;
     } catch (e) {

@@ -60,7 +60,7 @@ export class LoginPage implements OnInit {
       .login(form.value.email, form.value.password)
       .then((data) => {
         console.log(data);
-        this.navigate();
+        this.navigate(data?.user?.type);
         this.isLogin = false;
         form.reset();
       })
@@ -75,8 +75,10 @@ export class LoginPage implements OnInit {
       });
   }
 
-  navigate() {
-    this.router.navigateByUrl('/tabs');
+  navigate(role?) {
+    let url = '/tabs';
+    if (role == 'admin') url = '/admin';
+    this.router.navigateByUrl(url, {replaceUrl: true});
   }
 
   onReset(event) {

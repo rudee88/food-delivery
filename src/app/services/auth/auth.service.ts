@@ -1,9 +1,10 @@
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { StorageService } from '../storage/storage.service';
 import { ApiService } from '../api/api.service';
 import { BehaviorSubject, from, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ProfileService } from '../profile/profile.service';
+import { GlobalService } from '../global/global.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,8 @@ export class AuthService {
     private router: Router,
     private storage: StorageService,
     private api: ApiService,
-    private injector: Injector
+    private profileService: ProfileService,
+    private globalService: GlobalService
   ) { }
 
   async login(email: string, password: string): Promise<any> {
@@ -38,6 +40,7 @@ export class AuthService {
       console.log(response);
       return response;
     } catch(e) {
+      console.error(e);
       throw(e)
     }
   }
@@ -49,6 +52,23 @@ export class AuthService {
       this.updateToken(token);
     }
     return token;
+  }
+
+  async getUser() {
+    const token = await this.getToken();
+    console.log('token', token);
+    try {
+      if (token) {
+        const user = this.profileService.getProfile();
+        console.log('user: ', user);
+        if (user) return user;
+        return false;
+      }
+      return null;
+    } catch(e) {
+      if (token) return false;
+      return null;
+    }
   }
 
   isLoggedIn() {
@@ -107,8 +127,7 @@ export class AuthService {
   }
 
   updateProfileData(data) {
-    const profile = this.injector.get(ProfileService);
-    profile.updateProfileData(data);
+    this.profileService.updateProfileData(data);
   }
 
   async resetPassword(data) {
@@ -124,6 +143,7 @@ export class AuthService {
   logOut() {
     this.storage.removeStorage('rsp_foodDelivery_token');
     this._token.next(null);
+    this.profileService.updateProfileData(null);
     this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 }
