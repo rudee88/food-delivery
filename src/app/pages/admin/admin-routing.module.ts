@@ -7,6 +7,10 @@ const routes: Routes = [
   {
     path: '',
     component: AdminPage
+  },
+  {
+    path: 'add-banner',
+    loadChildren: () => import('./add-banner/add-banner.module').then( m => m.AddBannerPageModule)
   }
 ];
 
