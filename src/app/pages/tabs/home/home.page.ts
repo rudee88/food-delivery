@@ -70,13 +70,14 @@ export class HomePage implements OnInit, OnDestroy {
         this.globalService.errorToast();
       }
     );
-    this.profileSubs = this.profileService.profile.subscribe(profile => {
-      this.profile = profile;
-      console.log('profile: ', profile);
-      if (this.profile && !this.profile?.email_verified) {
-        this.checkEmailVerified();
-      }
-    });
+    // this.profileSubs = this.profileService.profile.subscribe(profile => {
+    //   this.profile = profile;
+    //   console.log('profile: ', profile);
+    //   if (this.profile && !this.profile?.email_verified) {
+    //     this.checkEmailVerified();
+    //   }
+    // });
+    this.isLoading = true;
     this.getBanners();
     if (!this.location?.lat) {
       this.getNearbyRestaurants();
@@ -97,7 +98,11 @@ export class HomePage implements OnInit, OnDestroy {
 
   async getProfile() {
     try {
-      await this.profileService.getProfile();
+      this.profile = await this.profileService.getProfile();
+      console.log('homepage profile: ', this.profile);
+      if (this.profile && !this.profile?.email_verified) {
+        this.checkEmailVerified();
+      }
     } catch(e) {
       console.log(e);
       this.globalService.errorToast();
@@ -214,7 +219,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.addressSub) this.addressSub.unsubscribe();
-    if (this.profileSubs) this.profileSubs.unsubscribe();
+    // if (this.profileSubs) this.profileSubs.unsubscribe();
   }
 
 }

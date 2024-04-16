@@ -44,7 +44,7 @@ export class GlobalService {
 
   async showButtonToast(msg, color = 'danger', position?) {
     const toast = await this.toastCtrl.create({
-      header: 'Alert',
+      // header: 'Alert',
       message: msg,
       color: color,
       position: position || 'bottom',

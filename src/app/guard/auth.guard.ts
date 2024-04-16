@@ -20,6 +20,10 @@ export class AuthGuard implements CanLoad {
     const user = await this.authService.getUser();
     console.log('user: ', user);
     if (user) {
+      if (user?.status != 'active') {
+        this.authService.logOut();
+        this.navigate('/login');
+      }
       if (user?.type == existingRole) return true;
       else {
         this.redirect(user?.type)
