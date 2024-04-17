@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   googleMapsApikey: 'AIzaSyDK9oFbkDvH6w-FU9PoyTZKbkM937_sJ7I',
-  serverBaseUrl: 'http://localhost:3000/api/'
+  serverBaseUrl: 'http://localhost:3000/api/',
+  serverUrl: 'http://localhost:3000/'
 };
 
 /*

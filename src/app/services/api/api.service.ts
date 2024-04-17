@@ -30,7 +30,7 @@ export class ApiService {
       distance: 2.5,
       price: 100,
       latitude: 3.1448499743415494,
-      longitude: 101.7689672668845
+      longitude: 101.7689672668845,
     },
     {
       uid: '12wefdefsdss',
@@ -67,7 +67,7 @@ export class ApiService {
       delivery_time: 25,
       price: 100,
       latitude: 3.1448499743415494,
-      longitude: 101.7689672668845
+      longitude: 101.7689672668845,
     },
     {
       uid: '12wefdefsdss',
@@ -104,7 +104,7 @@ export class ApiService {
       distance: 2.5,
       price: 100,
       latitude: 3.1448499743415494,
-      longitude: 101.7689672668845
+      longitude: 101.7689672668845,
     },
     {
       uid: '12wefdefsdss',
@@ -150,7 +150,7 @@ export class ApiService {
     },
   ];
 
-  allItems : Item[] = [
+  allItems: Item[] = [
     {
       category_id: 'e0',
       cover: 'assets/imgs/1.jpg',
@@ -231,7 +231,7 @@ export class ApiService {
       house: 'Ground Floor',
       id: '8Kox63KlggTvV7ebRK1r',
       landmark: '30A, Jalan 2/4',
-      lat: 3.1448499743415494, 
+      lat: 3.1448499743415494,
       lng: 101.7689672668845,
       title: 'Ampang',
       user_id: '1',
@@ -251,7 +251,7 @@ export class ApiService {
         user_id: '1',
       },
       deliveryCharge: 20,
-      grandTotal: 540.00,
+      grandTotal: 540.0,
       id: '5aG0RsPuze8NX00B7uRP',
       order: [
         {
@@ -286,7 +286,7 @@ export class ApiService {
       restaurant_id: '12wefdefsdss',
       status: 'created',
       time: 'Jul 6, 2020 11:44 AM',
-      total: 520.00,
+      total: 520.0,
       user_id: '1',
     },
     {
@@ -301,7 +301,7 @@ export class ApiService {
         user_id: '1',
       },
       deliveryCharge: 20,
-      grandTotal: 440.00,
+      grandTotal: 440.0,
       id: '5aG0RsPuze8NX00B7uR1',
       order: [
         {
@@ -359,34 +359,41 @@ export class ApiService {
       restaurant_id: '12wefdss',
       status: 'Delivered',
       time: 'Jul 7, 2020 11:44 AM',
-      total: 420.00,
+      total: 420.0,
       user_id: '1',
     },
   ];
 
-  constructor(
-    private http: HttpClient
-  ) {}
+  constructor(private http: HttpClient) {}
 
   get(url, data?) {
     // data = new HttpParams({
     //   fromObject: data
     // })
-    return this.http.get<any>(environment.serverBaseUrl + url, { params: data }).toPromise();
+    return this.http
+      .get<any>(environment.serverBaseUrl + url, { params: data })
+      .toPromise();
   }
 
-  post(url, data) {
-    const body = new HttpParams({
-      fromObject: data
-    })
-    return this.http.post<any>(environment.serverBaseUrl + url, body).toPromise();
+  post(url, data, formData = false) {
+    if (!formData) {
+      data = new HttpParams({
+        fromObject: data,
+      });
+    }
+    return this.http
+      .post<any>(environment.serverBaseUrl + url, data)
+      .toPromise();
   }
 
-  patch(url, data) {
-    const body = new HttpParams({
-      fromObject: data
-    })
-    return this.http.patch<any>(environment.serverBaseUrl + url, body).toPromise();
+  patch(url, data, formData = false) {
+    if (!formData) {
+      data = new HttpParams({
+        fromObject: data,
+      });
+    }
+    return this.http
+      .patch<any>(environment.serverBaseUrl + url, data)
+      .toPromise();
   }
-
 }
