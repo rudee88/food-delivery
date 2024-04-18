@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'add-banner',
     loadChildren: () => import('./add-banner/add-banner.module').then( m => m.AddBannerPageModule)
+  },
+  {
+    path: 'add-restaurant',
+    loadChildren: () => import('./add-restaurant/add-restaurant.module').then( m => m.AddRestaurantPageModule)
   }
 ];
 
