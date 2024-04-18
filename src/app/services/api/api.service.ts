@@ -12,11 +12,11 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ApiService {
-  banners = [
-    { banner: 'assets/imgs/1.jpg' },
-    { banner: 'assets/imgs/2.jpg' },
-    { banner: 'assets/imgs/3.jpg' },
-  ];
+  // banners = [
+  //   { banner: 'assets/imgs/1.jpg' },
+  //   { banner: 'assets/imgs/2.jpg' },
+  //   { banner: 'assets/imgs/3.jpg' },
+  // ];
 
   restaurants: Restaurant[] = [
     {

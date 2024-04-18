@@ -9,6 +9,7 @@ import { Restaurant } from 'src/app/models/restaurant.model';
 import { User } from 'src/app/models/user.model';
 import { AddressService } from 'src/app/services/address/address.service';
 import { ApiService } from 'src/app/services/api/api.service';
+import { BannerService } from 'src/app/services/banner/banner.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { GoogleMapsService } from 'src/app/services/google-maps/google-maps.service';
 import { LocationService } from 'src/app/services/location/location.service';
@@ -44,7 +45,8 @@ export class HomePage implements OnInit, OnDestroy {
     private globalService: GlobalService,
     private locationService: LocationService,
     private mapService: GoogleMapsService,
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private bannerService: BannerService
   ) {}
 
   ngOnInit() {
@@ -116,7 +118,18 @@ export class HomePage implements OnInit, OnDestroy {
   }
 
   getBanners() {
-    this.banners = this.api.banners;
+    this.bannerService.getBanners().then(banners => {
+      this.banners = banners;
+      console.log('banners: ', this.banners);
+    })
+    .catch(e => {
+      console.log(e);
+      let msg;
+      if (e?.error?.message) {
+        msg = e.error.message;
+      }
+      this.globalService.errorToast(msg);
+    })
   }
 
   nearbyApiCall() {
