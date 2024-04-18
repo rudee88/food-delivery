@@ -3,6 +3,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
+import { Banner } from 'src/app/interfaces/banner.interface';
 import { Address } from 'src/app/models/address.model';
 
 import { Restaurant } from 'src/app/models/restaurant.model';
@@ -29,7 +30,7 @@ interface AddressResponse {
 })
 export class HomePage implements OnInit, OnDestroy {
   @ViewChild('otp_modal') modal: ModalController;
-  banners: any[] = [];
+  banners: Banner[] = [];
   restaurants: Restaurant[] = [];
   isLoading: boolean = false;
   location = {} as Address;

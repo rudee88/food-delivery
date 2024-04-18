@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IonicSlides } from '@ionic/angular';
+import { Banner } from 'src/app/interfaces/banner.interface';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -10,7 +11,7 @@ import { environment } from 'src/environments/environment';
 export class BannerComponent  implements OnInit {
   serverUrl = environment.serverUrl;
   swiperModules = [IonicSlides];
-  @Input() bannerImages: any[];
+  @Input() bannerImages: Banner[];
 
   constructor() { }
 
