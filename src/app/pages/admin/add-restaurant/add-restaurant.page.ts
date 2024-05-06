@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SearchLocationComponent } from 'src/app/components/search-location/search-location.component';
 import { AuthService } from 'src/app/services/auth/auth.service';
+import { CityService } from 'src/app/services/city/city.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 
 @Component({
@@ -22,14 +23,23 @@ export class AddRestaurantPage implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private globalService: GlobalService
+    private globalService: GlobalService,
+    private cityService: CityService
   ) { }
 
   ngOnInit() {
     this.getCities();
   }
 
-  getCities() {}
+  async getCities() {
+    try {
+      this.cities = await this.cityService.getCities();
+      console.log('cities: ', this.cities);
+    } catch(e) {
+      console.log(e);
+      this.globalService.errorToast(e);
+    }
+  }
 
   async onSearchLocation() {
     try {

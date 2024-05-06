@@ -149,7 +149,7 @@
            #city="ngModel"
            required
           >
-          <ion-select-option *ngFor="let city of cities" [value]="city.uid">{{city?.uid}}</ion-select-option>
+          <ion-select-option *ngFor="let city of cities" [value]="city.uid">{{city?.name}}</ion-select-option>
         </ion-select>
       </ion-item>
       <ion-text color="danger" *ngIf="!city.valid && city.touched">
